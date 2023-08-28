@@ -1,0 +1,31 @@
+:root {
+  --background-color: #073042;
+  --big-text-size: 50px;
+  --text-title-section: 22px;
+  --text-title: 20px;
+  --text-description: 14px;
+  --small-text-size: 12px;
+  --big-text-size-movie: 28px;
+  --small-text-size-movie: 13px;
+  --text-duration: 11px;
+}
+
+@media screen and (max-width: 850px) {
+  :root {
+    --big-text-size: 40px;
+    --text-description: 12px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  :root {
+    --big-text-size: 30px;
+    --text-title-section: 18px;
+    --text-title: 18px;
+    --text-description: 11px;
+    --small-text-size: 10px;
+    --big-text-size-movie: 18px;
+    --small-text-size-movie: 12px;
+    --text-duration: 10px;
+  }
+}

@@ -1,0 +1,21 @@
+.section-title__container {
+  padding-bottom: 23px;
+  border-bottom: 1px solid #000000;
+}
+
+.section-title__title {
+  font-size: var(--text-title-section);
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.88px;
+}
+
+@media screen and (max-width: 530px) {
+  .section-title__container {
+    padding-bottom: 28px;
+  }
+
+  .section-title__title {
+    letter-spacing: -0.72px;
+  }
+}
