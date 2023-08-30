@@ -1,7 +1,7 @@
 import React from 'react';
 import './main.css';
 import Promo from './promo/promo';
-import AboutProject from "../main/about-project/about-project";
+import AboutProject from "./about-project/about-project";
 import Techs from "./techs/techs";
 import AboutMe from "./about_me/about_me";
 import Portfolio from "./portfolio/portfolio";

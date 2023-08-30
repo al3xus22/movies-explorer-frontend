@@ -1,0 +1,61 @@
+.side-menu {
+  display: none;
+}
+
+@media screen and (max-width: 850px) {
+  .side-menu {
+    display: block;
+    position: fixed;
+    width: 100%;
+    min-width: 320px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.5s;
+    z-index: 2;
+  }
+
+  .side-menu_opened {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .side-menu__content {
+    padding: 159px 0 90px;
+    box-sizing: border-box;
+    width: 68%;
+    height: 100vh;
+    position: relative;
+    left: 32%;
+    top: 0;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .side-menu_close-button {
+    position: absolute;
+    right: 23px;
+    top: 23px;
+    background-image: url("../../images/close-button.svg");
+    width: 31px;
+    height: 31px;
+    object-fit: none;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .side-menu__content {
+    width: 100%;
+    left: 0;
+  }
+}

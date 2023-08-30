@@ -1,0 +1,40 @@
+.profile-button {
+  width: 100px;
+  height: 32px;
+  padding-left: 11px;
+  padding-right: 3px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 40px;
+  background: #ffffff;
+  box-shadow: 0 3px 14px 0 rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.profile-button__text {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.profile-button__logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 50px;
+  background-color: #F9F9F9;
+  object-fit: none;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+
+.profile-button_main {
+  background: #2BE080;
+}
+
+@media screen and (max-width: 850px) {
+  .profile-button_main {
+    background: #ffffff;
+  }
+}

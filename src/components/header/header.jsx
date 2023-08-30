@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./header.css";
 import headerLogo from "../../images/header__logo.svg";
 import { Link, useLocation } from "react-router-dom";
 import Navigation from "../navigation/navigation";
-import ProfileButton from "../movies/profile-button/profile-button";
-import SideMenu from "../movies/side-menu/side-menu";
+import ProfileButton from "../profile-button/profile-button";
+import SideMenu from "../side-menu/side-menu";
 
-function Header() {
+function Header(props) {
 
   const location = useLocation();
 
@@ -25,19 +25,21 @@ function Header() {
       <Link className="header__link" to="/">
         <img src={headerLogo} alt="Логотип" className="header__logo link-effect hover-effect"/>
       </Link>
-      <div className="header__navigation">
+      {props.loggedIn && <div className="header__navigation">
         <Navigation/>
-      </div>
-      {location.pathname === "/" && <nav className="header__sign-in">
-        <Link className="header__sign-in hover-effect link-effect" to="/sign-up">Регистрация</Link>
-        <Link className="header__sign-in" to="/sign-in">
+      </div>}
+      {location.pathname === "/" && !props.loggedIn ? (<nav className="header__sign-in">
+        <Link className="header__sign-in hover-effect link-effect" to="/signup">Регистрация</Link>
+        <Link className="header__sign-in" to="/signin">
           <button type="submit" className="header__sign-in-button hover-effect button-effect">Войти</button>
         </Link>
-      </nav>}
-      <Link className="header__profile" to="/profile">
+      </nav>) : ""}
+      {props.loggedIn && <Link className="header__profile" to="/profile">
         <ProfileButton/>
-      </Link>
-      <button type="button" className={`header__burger-button ${location.pathname === "/" ? "header__burger-button_invert" : ""} hover-effect button-effect`} onClick={handleBurgerClick}></button>
+      </Link>}
+      {props.loggedIn && <button type="button"
+               className={`header__burger-button ${location.pathname === "/" ? "header__burger-button_invert" : ""} hover-effect button-effect`}
+               onClick={handleBurgerClick}></button>}
       <SideMenu isOpen={isOpen} handleCloseSideMenu={handleCloseSideMenu}/>
     </header>
   );
