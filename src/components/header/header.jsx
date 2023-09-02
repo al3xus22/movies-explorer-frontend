@@ -21,7 +21,7 @@ function Header(props) {
   }
 
   return (
-    <header className={`header ${location.pathname === "/" ? "header__main" : ""}`}>
+    <header className={`header ${location.pathname === "/" ? "header_main" : ""}`}>
       <Link className="header__link" to="/">
         <img src={headerLogo} alt="Логотип" className="header__logo link-effect hover-effect"/>
       </Link>
@@ -29,8 +29,8 @@ function Header(props) {
         <Navigation/>
       </div>}
       {location.pathname === "/" && !props.loggedIn ? (<nav className="header__sign-in">
-        <Link className="header__sign-in hover-effect link-effect" to="/signup">Регистрация</Link>
-        <Link className="header__sign-in" to="/signin">
+        <Link className="header__sign-in-link hover-effect link-effect" to="/signup">Регистрация</Link>
+        <Link className="header__sign-in-link" to="/signin">
           <button type="submit" className="header__sign-in-button hover-effect button-effect">Войти</button>
         </Link>
       </nav>) : ""}

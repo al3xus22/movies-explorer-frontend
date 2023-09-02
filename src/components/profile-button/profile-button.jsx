@@ -9,7 +9,7 @@ function ProfileButton() {
 
   return(
     <button type="button"
-            className={`profile-button ${location.pathname === "/" ? "profile-button_main" : ""} profile-button__text hover-effect button-effect`}>Аккаунт<img
+            className={`profile-button ${location.pathname === "/" ? "profile-button_main" : ""} profile-button_text hover-effect button-effect`}>Аккаунт<img
       src={profileLogo} alt="Профиль" className="profile-button__logo"/>
     </button>
   )

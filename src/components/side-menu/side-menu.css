@@ -38,7 +38,7 @@
     align-items: center;
   }
 
-  .side-menu_close-button {
+  .side-menu__close-button {
     position: absolute;
     right: 23px;
     top: 23px;

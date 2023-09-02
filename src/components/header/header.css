@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.header__main {
+.header_main {
   background-color: var(--background-color);
 }
 
@@ -30,7 +30,7 @@
   gap: 30px;
 }
 
-.header__sign-in {
+.header__sign-in-link {
   text-decoration: none;
   color: #fff;
   font-weight: 500;

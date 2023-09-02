@@ -9,7 +9,7 @@ function SideMenu(props) {
   return (
     <div className={`side-menu ${props.isOpen ? "side-menu_opened" : ""}`}>
       <div className="side-menu__content">
-        <button type="button" className="side-menu_close-button hover-effect button-effect"
+        <button type="button" className="side-menu__close-button hover-effect button-effect"
                 onClick={props.handleCloseSideMenu}></button>
           <Navigation handleCloseSideMenu={props.handleCloseSideMenu}/>
         <Link to="/profile" onClick={props.handleCloseSideMenu}>
