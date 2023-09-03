@@ -65,9 +65,9 @@ function Profile(props) {
       <div className="profile-content">
         <h1 className="profile__title">Привет, Алексей!</h1>
         <form className="profile__form" noValidate id="profile" onSubmit={handleSubmit}>
-          <ProfileInput editFormActive={editFormActive} label="Имя" type="text" name="name" id="name" value={formData.name} onChange={handleInputChange} error={errors.name}/>
+          <ProfileInput editFormActive={editFormActive} label="Имя" type="text" name="name" id="name" placeholder="Имя" value={formData.name} onChange={handleInputChange} error={errors.name}/>
           <span className="profile__form-border"></span>
-          <ProfileInput  editFormActive={editFormActive} label="E-mail" type="email" name="email" id="email" value={formData.email} onChange={handleInputChange} error={errors.email}/>
+          <ProfileInput  editFormActive={editFormActive} label="E-mail" type="email" name="email" id="email" placeholder="E-mail" value={formData.email} onChange={handleInputChange} error={errors.email}/>
           {profileEditError && <span className="profile__input-error profile__input-error-text">{profileEditError}</span>}
           {editFormActive && <button className="profile__button-submit profile__button-submit-text profile__buttons-position" type="submit">Сохранить</button>}
         </form>

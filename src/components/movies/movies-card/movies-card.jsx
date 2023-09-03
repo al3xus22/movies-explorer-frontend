@@ -17,10 +17,10 @@ function MoviesCard(props) {
       <div className="movies-card__content">
         <h2 className="movies-card__title">{movie.title}</h2>
         {location.pathname === "/movies" && <button
-          className={`movies-card__like-button ${isLiked ? " movies-card__like-button_active" : ""}`}
+          className={`movies-card__like-button ${isLiked ? " movies-card__like-button_active" : ""} hover-effect button-effect`}
           onClick={handleLike}></button>}
         {location.pathname === "/saved-movies" && <button
-          className="movies-card__like-button movies-card__like-button_delete"></button>}
+          className="movies-card__like-button movies-card__like-button_delete hover-effect button-effect"></button>}
       </div>
       <p className="movies-card__duration">{movie.duration}</p>
     </li>

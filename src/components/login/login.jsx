@@ -61,9 +61,9 @@ function Login(props) {
         </Link>
         <h1 className="login__title">Рады видеть!</h1>
         <form className="login__form" onSubmit={handleSubmit} id="login" noValidate>
-            <AuthInput label="E-mail" type="email" value={formData.email} name="email" id="email"
+            <AuthInput label="E-mail" type="email" value={formData.email} name="email" id="email" placeholder="E-mail"
                        onChange={handleInputChange} error={errors.email}/>
-            <AuthInput label="Пароль" type="password" value={formData.password} name="password" id="password"
+            <AuthInput label="Пароль" type="password" value={formData.password} name="password" id="password" placeholder="Пароль"
                        onChange={handleInputChange} error={errors.password}/>
           {loginError && <span className="login__input-error login__input-error-text">{loginError}</span>}
           <button type="submit"

@@ -74,11 +74,11 @@ function Register() {
         </Link>
         <h1 className="login__title">Добро пожаловать!</h1>
         <form className="login__form" onSubmit={handleSubmit} id="register" noValidate>
-          <AuthInput label="Имя" type="text" value={formData.name} name="name" id="name"
+          <AuthInput label="Имя" type="text" value={formData.name} name="name" id="name" placeholder="Имя"
                      onChange={handleInputChange} error={errors.name}/>
-          <AuthInput label="E-mail" type="email" value={formData.email} name="email" id="email"
+          <AuthInput label="E-mail" type="email" value={formData.email} name="email" id="email" placeholder="E-mail"
                      onChange={handleInputChange} error={errors.email}/>
-          <AuthInput label="Пароль" type="password" value={formData.password} name="password" id="password"
+          <AuthInput label="Пароль" type="password" value={formData.password} name="password" id="password" placeholder="Пароль"
                      onChange={handleInputChange} error={errors.password}/>
           {registerError && <span className="login__input-error login__input-error-text">{registerError}</span>}
           <button type="submit"

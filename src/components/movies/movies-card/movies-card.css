@@ -1,6 +1,7 @@
 .movies-card {
   width: 100%;
   cursor: pointer;
+  list-style: none;
 }
 
 .movies-card:hover .movies-card__like-button_delete {
