@@ -1,0 +1,98 @@
+.header {
+  position: relative;
+  padding: 18px 70px;
+  box-sizing: border-box;
+  min-width: 320px;
+  height: 74px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header_main {
+  background-color: var(--background-color);
+}
+
+.header__logo {
+  padding: 0;
+  object-fit: none;
+}
+
+.header__link {
+  height: 100%;
+}
+
+.header__sign-in {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.header__sign-in-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: var(--small-text-size);
+  line-height: 16px;
+}
+
+.header__sign-in-button {
+  width: 77px;
+  height: 32px;
+  border: none;
+  border-radius: 3px;
+  background: #2BE080;
+}
+
+.header__burger-button {
+  display: none;
+}
+
+@media screen and (max-width: 850px) {
+  .header {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+
+  .header__burger-button {
+    display: block;
+    background-image: url("../../images/profile-button-burger.svg");
+    background-repeat: no-repeat;
+    object-fit: none;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background-color: transparent;
+    justify-self: end;
+  }
+
+  .header__burger-button_invert {
+    filter: invert(1);
+  }
+
+  .header__profile {
+    display: none;
+  }
+
+  .header__navigation {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .header {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .header__sign-in {
+    gap: 14px;
+  }
+
+  .header__sign-in-button {
+    width: 54px;
+    height: 26px;
+  }
+}

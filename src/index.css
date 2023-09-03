@@ -1,0 +1,28 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/font.css);
+@import url(./vendor/variables.css);
+
+body, input, textarea, button, p, h1, h2, h3, h4, h5, ul, li {
+  font-family: 'Inter', 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.hover-effect {
+  opacity: 1;
+  transition: opacity 0.5s;
+  cursor: pointer;
+}
+
+.button-effect:hover {
+  opacity: 0.8;
+}
+
+.link-effect:hover {
+  opacity: 0.7;
+}
+

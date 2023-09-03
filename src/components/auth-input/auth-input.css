@@ -1,0 +1,48 @@
+.auth-input {
+  width: 396px;
+  height: 68px;
+  display: grid;
+  grid-template-rows: 17px 27px 24px;
+}
+
+.auth-input__label {
+  font-size: 10px;
+  font-weight: 400;
+  color: #A0A0A0;
+}
+
+.auth-input__input {
+  padding-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.auth-input__input:focus {
+  outline: none;
+  border-bottom: 1px solid #3456F3;
+}
+
+.auth-input__input-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.auth-input__input-text_error {
+  color: #FF004C;
+}
+
+.auth-input__input-error {
+  width: 100%;
+}
+
+.auth-input__input-error-text {
+  color: #FF3055;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 530px) {
+  .auth-input {
+    width: 260px;
+  }
+}

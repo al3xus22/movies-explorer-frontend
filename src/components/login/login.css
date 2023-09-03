@@ -1,0 +1,144 @@
+.login {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 70px 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login__content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.login__main-link {
+  width: 38px;
+  height: 38px;
+}
+
+.login__title {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.login__form {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login__input-error {
+  width: 100%;
+}
+
+.login__input-error-text {
+  color: #FF3055;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.login-button {
+  width: 396px;
+  height: 45px;
+  border: none;
+  border-radius: 3px;
+  background: #3456F3;
+  position: absolute;
+  bottom: 103px;
+}
+
+.login-button-text {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.login__register {
+  display: flex;
+  gap: 6px;
+}
+
+.login__description {
+  color: #A0A0A0;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.login__register-link {
+  text-decoration: none;
+  color: #3456F3;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.login__input-error {
+  width: 396px;
+  position: absolute;
+  bottom: 164px;
+}
+
+.login__input-error-text {
+  color: #FF004C;
+  font-size: 11px;
+  font-weight: 400;
+  text-align: center;
+}
+
+@media screen and (max-width: 850px) {
+  .login {
+    padding: 232px 0;
+  }
+
+  .login-button {
+    bottom: 265px;
+  }
+
+  .login__input-error {;
+    bottom: 326px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .login {
+    padding: 56px 0 30px;
+    gap: 40px;
+  }
+
+  .login__content {
+    align-items: center;
+    gap: 50px;
+  }
+
+  .login__form {
+    margin-top: 30px;
+  }
+
+  .login-button {
+    bottom: 59px;
+    width: 260px;
+  }
+
+  .login__register {
+    gap: 7px;
+  }
+
+  .login__description {
+    font-size: 12px;
+  }
+
+  .login__register-link {
+    font-size: 12px;
+  }
+
+  .login__input-error {;
+    width: 260px;
+    bottom: 118px;
+  }
+}

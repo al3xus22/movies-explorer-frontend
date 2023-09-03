@@ -1,0 +1,132 @@
+.promo {
+  margin: 0 -70px;
+  padding: 75px 70px;
+  box-sizing: border-box;
+  min-width: 320px;
+  color: #ffffff;
+  background-color: var(--background-color);
+  min-height: 574px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.promo__content {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.promo__main-text {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.promo__title {
+  font-size: var(--big-text-size);
+  font-weight: 400;
+  line-height: 58px;
+}
+
+.promo__text-no-wrap {
+  white-space: nowrap;
+}
+
+.promo__description {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: normal;
+  opacity: 0.5;
+}
+
+.promo__description-area {
+  max-width: 310px;
+}
+
+.promo__link {
+  width: 129px;
+}
+
+.promo__button-more {
+  width: 129px;
+  height: 36px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: transparent;
+}
+
+.promo__button-more_text {
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.promo__logo {
+  min-width: 310px;
+  min-height: 304px;
+  object-fit: none;
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-image: url("../../../images/logo__promo_L.svg");
+}
+
+@media screen and (max-width: 850px) {
+  .promo {
+    margin: 0 -50px;
+    padding: 140px 50px 76px;
+    min-height: 850px;
+    flex-direction: column;
+  }
+
+  .promo__content {
+    max-width: 680px;
+    align-items: center;
+  }
+
+  .promo__title {
+    line-height: 50px;
+  }
+
+  .promo__main-text {
+    text-align: center;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 92px;
+  }
+
+  .promo__description-area {
+    max-width: 260px;
+  }
+
+  .promo__logo {
+    order: -1;
+    background-position: top;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .promo {
+    margin: 0 -14px;
+    padding: 70px 14px 30px;
+    min-height: 636px;
+  }
+
+  .promo__main-text {
+    gap: 24px;
+    margin-bottom: 80px;
+  }
+
+  .promo__title {
+    font-weight: 400;
+    line-height: 38px;
+    letter-spacing: -1.2px;
+  }
+
+  .promo__logo {
+    min-width: 210px;
+    min-height: 206px;
+    background-image: url("../../../images/logo__promo_S.svg");
+  }
+}

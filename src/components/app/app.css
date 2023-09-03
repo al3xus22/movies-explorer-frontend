@@ -1,0 +1,8 @@
+.app {
+  min-height: 100vh;
+  min-width: 320px;
+  background-color: #000000;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}

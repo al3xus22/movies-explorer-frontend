@@ -1,0 +1,133 @@
+.techs {
+  margin: 0 -70px;
+  padding: 100px 70px;
+  min-width: calc(320px - 2*18px);
+  box-sizing: border-box;
+  background-color: #F5F5F5;
+}
+
+.techs__content {
+  padding-top: 90px;
+  box-sizing: border-box;
+  min-height: 374px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.techs__main-text {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 26px;
+  max-width: 460px;
+}
+
+.techs__title {
+  font-size: 50px;
+  font-weight: 400;
+  line-height: 58px;
+  letter-spacing: -2px;
+}
+
+.techs__description {
+  font-size: var(--text-description);
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.56px;
+  text-align: center;
+}
+
+.techs__stack-container {
+  list-style: none;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 90px);
+  grid-auto-rows: 60px;
+  gap: 10px;
+}
+
+.techs__stack-item {
+  background-color: #E8E8E8;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.techs__stack-text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.56px;
+}
+
+@media screen and (max-width: 850px) {
+  .techs {
+    margin: 0 -50px;
+    padding: 90px 50px;
+  }
+
+  .techs__content {
+    padding-top: 80px;
+    min-height: 336px;
+  }
+
+  .techs__main-text {
+    gap: 22px;
+  }
+
+  .techs__description {
+    line-height: 18px;
+    letter-spacing: -0.48px;
+  }
+
+  .techs__stack-container {
+    grid-template-columns: repeat(auto-fit, 84px);
+    grid-auto-rows: 57px;
+  }
+
+  .techs__stack-text {
+    font-size: 12px;
+    letter-spacing: -0.48px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .techs {
+    margin: 0;
+    padding: 70px 4px;
+    background-color: #FFF;
+  }
+
+  .techs__content {
+    padding-top: 60px;
+    min-height: 460px;
+  }
+
+  .techs__main-text {
+    gap: 24px;
+    max-width: 100%;
+  }
+
+  .techs__title {
+    font-size: var(--big-text-size);
+    line-height: normal;
+    letter-spacing: -1.2px;
+  }
+
+  .techs__description {
+    line-height: 16px;
+    letter-spacing: -0.44px;
+  }
+
+  .techs__stack-container {
+    max-width: 180px;
+  }
+
+  .techs__stack-text {
+    font-size: 12px;
+    letter-spacing: -0.48px
+  }
+}
