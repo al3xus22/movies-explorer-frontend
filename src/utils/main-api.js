@@ -1,0 +1,91 @@
+//export const BASE_URL = "https://api.films.nomoreparties.co";
+export const BASE_URL = "http://localhost:3001";
+
+//Регистрация пользователя
+export const register = ({ name, email, password }) => {
+  return fetch(`${BASE_URL}/signup`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, email, password }),
+  })
+}
+
+//Авторизация пользователя
+export const authorize = ({ email, password }) => {
+  return fetch(`${BASE_URL}/signin`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  })
+}
+
+
+//Выход из профиля
+export const signOut = () => {
+  return fetch(`${BASE_URL}/signout`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    }
+  })
+}
+
+//Получение данных пользователя
+export const getUserInfo = () => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    }
+  })
+}
+
+//Сохранение (изменение) данных пользователя
+export const setUserInfo = ({name, email}) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: name, email: email }),
+  })
+}
+
+//Сохранение (лайк) фильмов
+export const saveMovies = (movie, isLiked) => {
+  return fetch(`${BASE_URL}/movies`, {
+    method: isLiked ? "PUT" : "DELETE",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+}
+
+//Удаление сохраненных фильмов
+export const deleteMovies = (movieId) => {
+  return fetch(`${BASE_URL}/movies/${movieId}/likes`, {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+}
+

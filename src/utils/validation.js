@@ -7,6 +7,8 @@ export const validateName = (name) => {
   }
   if (name.length > 30) {
     return "Длина имени максимум 30 символов";
+  } if (!/^[a-zA-Zа-яА-ЯёЁ\s-]+$/.test(name)) {
+    return "Имя должно содержать только латиницу, кириллицу, пробел или дефис"
   }
   return "";
 }

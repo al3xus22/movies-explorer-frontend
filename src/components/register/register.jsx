@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import "../login/login.css";
 import logo from "../../images/header__logo.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthInput from "../auth-input/auth-input";
 import { validateName, validateEmail, validatePassword } from "../../utils/validation";
 
-function Register() {
-
-  const navigate = useNavigate();
-
+function Register({ register, authError }) {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
-  const [errors, setErrors] = useState({ name: "", email: "", password: "" });
-  const [registerError, setRegisterError] = useState("");
+  const [errors, setErrors] = useState({ name: "", email: "", password: "" });         //Ошибки валидации
+  const [registerError, setRegisterError] = useState("");                              //Вывод сообщения об ошибке
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,13 +31,13 @@ function Register() {
   }
 
   const validateField = (name, value) => {
-    if(name === "name") {
+    if (name === "name") {
       return validateName(value);
     }
-    if(name === "email") {
+    if (name === "email") {
       return validateEmail(value);
     }
-    if(name === "password") {
+    if (name === "password") {
       return validatePassword(value);
     }
     return "";
@@ -60,11 +57,13 @@ function Register() {
 
     if (isFormValid) {
       setRegisterError("");
-      navigate("/signin", { replace: true });
+      register({name: formData.name, email: formData.email, password: formData.password});
     } else {
       setRegisterError("При регистрации пользователя произошла ошибка.")
     }
   };
+
+  const isFormValid = Object.values(errors).every((error) => error === '') && Object.values(formData).every((value) => value !== '');
 
   return (
     <section className="login">
@@ -78,11 +77,12 @@ function Register() {
                      onChange={handleInputChange} error={errors.name}/>
           <AuthInput label="E-mail" type="email" value={formData.email} name="email" id="email" placeholder="E-mail"
                      onChange={handleInputChange} error={errors.email}/>
-          <AuthInput label="Пароль" type="password" value={formData.password} name="password" id="password" placeholder="Пароль"
+          <AuthInput label="Пароль" type="password" value={formData.password} name="password" id="password"
+                     placeholder="Пароль"
                      onChange={handleInputChange} error={errors.password}/>
-          {registerError && <span className="login__input-error login__input-error-text">{registerError}</span>}
+          {(registerError || authError) && <span className="login__input-error login__input-error-text">{registerError || authError}</span>}
           <button type="submit"
-                  className="login-button login-button-text login__button-submit hover-effect button-effect">Зарегистрироваться
+                  className={`login-button login-button-text login__button-submit ${isFormValid ? "" : "login__button-submit_disabled"} hover-effect button-effect`} disabled={!isFormValid}>Зарегистрироваться
           </button>
         </form>
       </div>
