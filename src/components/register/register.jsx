@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import AuthInput from "../auth-input/auth-input";
 import { validateName, validateEmail, validatePassword } from "../../utils/validation";
 
-function Register({ register, authError }) {
+function Register({ register, authError, setQuery, setMovies }) {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({ name: "", email: "", password: "" });         //Ошибки валидации
   const [registerError, setRegisterError] = useState("");                              //Вывод сообщения об ошибке
@@ -57,6 +57,8 @@ function Register({ register, authError }) {
 
     if (isFormValid) {
       setRegisterError("");
+      setQuery("");
+      setMovies("");
       register({name: formData.name, email: formData.email, password: formData.password});
     } else {
       setRegisterError("При регистрации пользователя произошла ошибка.")

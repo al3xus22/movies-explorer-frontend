@@ -5,9 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthInput from "../auth-input/auth-input";
 import { validateEmail, validatePassword } from "../../utils/validation";
 
-function Login({ onLogin, authError, setAuthError }) {
-
-  const navigate = useNavigate();
+function Login({ onLogin, authError, setAuthError, setQuery, setMovies }) {
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });             //Ошибки валидации
@@ -51,6 +49,8 @@ function Login({ onLogin, authError, setAuthError }) {
         password: formData.password
       });
       setLoginError("");
+      setQuery("");
+      setMovies("");
     } else {
       setLoginError("Вы ввели неправильный логин или пароль")
     }

@@ -13,7 +13,8 @@ function Profile({
                    setEditFormActive,
                    isUserInfoChanged,
                    setIsUserInfoChanged,
-                   serverRes
+                   serverRes,
+                   setServerRes
                  }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -75,6 +76,7 @@ function Profile({
     setEditFormActive(!editFormActive);
     setProfileEditError("");
     setUpdateError("");
+    setServerRes("");
   }
 
   return (
@@ -88,7 +90,7 @@ function Profile({
           <ProfileInput editFormActive={editFormActive} label="E-mail" type="email" name="email" id="email"
                         value={formData.email} placeholder="E-mail" onChange={handleInputChange} error={errors.email}/>
           {(profileEditError || updateError || serverRes) &&
-            <span className={`profile__input-error profile__input-error-text ${serverRes ? "profile__input-error-text_res" : ""}`}>{profileEditError || updateError || serverRes}</span>}
+            <span className={`profile__input-error profile__input-error-text ${serverRes ? (serverRes && "profile__input-error-text_res") : ""}`}>{profileEditError || updateError || serverRes}</span>}
           {editFormActive && <button
             className={`profile__button-submit profile__button-submit-text profile__buttons-position ${isUserDataChanged ? "" : "profile__button-submit_disabled"}`}
             type="submit" onClick={handleSubmit} disabled={!isUserDataChanged}>Сохранить</button>}

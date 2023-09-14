@@ -1,4 +1,4 @@
-//export const BASE_URL = "https://api.films.nomoreparties.co";
+//import {BASE_URL} from "./constants";
 export const BASE_URL = "http://localhost:3001";
 
 //Регистрация пользователя
@@ -66,9 +66,24 @@ export const setUserInfo = ({name, email}) => {
 }
 
 //Сохранение (лайк) фильмов
-export const saveMovies = (movie, isLiked) => {
+export const saveMovies = (movie) => {
   return fetch(`${BASE_URL}/movies`, {
-    method: isLiked ? "PUT" : "DELETE",
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...movie
+    })
+  })
+}
+
+//Удаление сохраненных фильмов
+export const deleteMovies = (id) => {
+  return fetch(`${BASE_URL}/movies/${id}`, {
+    method: "DELETE",
     credentials: "include",
     headers: {
       "Accept": "application/json",
@@ -77,10 +92,9 @@ export const saveMovies = (movie, isLiked) => {
   })
 }
 
-//Удаление сохраненных фильмов
-export const deleteMovies = (movieId) => {
-  return fetch(`${BASE_URL}/movies/${movieId}/likes`, {
-    method: "DELETE",
+export const getSavedMovies = () => {
+  return fetch(`${BASE_URL}/movies`, {
+    method: "GET",
     credentials: "include",
     headers: {
       "Accept": "application/json",
