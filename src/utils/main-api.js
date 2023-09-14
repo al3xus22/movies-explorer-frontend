@@ -1,5 +1,5 @@
-//import {BASE_URL} from "./constants";
-export const BASE_URL = "http://localhost:3001";
+import {BASE_URL} from "./constants";
+// export const BASE_URL = "http://localhost:3001";
 
 //Регистрация пользователя
 export const register = ({ name, email, password }) => {
