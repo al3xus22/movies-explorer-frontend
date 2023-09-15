@@ -44,31 +44,41 @@ function App() {
   //Регистрация
   const registerUser = ({ name, email, password }) => {
     MainApi.register({ name, email, password })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-      .then(() => {
-        MainApi.authorize({ email, password })
-          .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-          .then(({ user }) => {
-            localStorage.setItem("userId", user._id);
-            setLoggedIn(true);
-            navigate("/movies", { replace: true });
-            setCurrentUser(user);
-          })
-          .catch((err) => {
-            setErrorRes("Ошибка авторизации");
-            console.log(err);
-          });
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Ошибка: ${res.status}`);
+        }
+
+        return MainApi.authorize({ email, password });
+      })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Ошибка: ${res.status}`);
+        }
+
+        return res.json();
+      })
+      .then(({ user }) => {
+        // Сохраняем идентификатор пользователя в локальном хранилище
+        localStorage.setItem("userId", user._id);
+
+        // Устанавливаем флаг авторизации в true и обновляем текущего пользователя
+        setLoggedIn(true);
+        setCurrentUser(user);
+
+        // Перенаправляем пользователя на нужную страницу, например, на страницу фильмов
+        navigate("/movies", { replace: true });
       })
       .catch((error) => {
-        if (error.includes("Ошибка: 409")) {
+        if (error.message.includes("Ошибка: 409")) {
           setErrorRes("Пользователь с таким email уже существует");
-        } else if (error.includes("Ошибка: 400")) {
+        } else if (error.message.includes("Ошибка: 400")) {
           setErrorRes("При регистрации пользователя произошла ошибка.");
         } else {
           setErrorRes("На сервере произошла ошибка.");
         }
       });
-  }
+  };
 
   //Аутентификация
   const handleLogin = (formData) => {

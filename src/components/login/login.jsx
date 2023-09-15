@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./login.css";
 import logo from "../../images/header__logo.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthInput from "../auth-input/auth-input";
 import { validateEmail, validatePassword } from "../../utils/validation";
 
