@@ -60,7 +60,6 @@ function Movies({
 
   //Отображаемые на странице карточки и данные для кнопки Ещё--------------------------------------------------------
   const isAllMoviesDisplayed = searchMovies.length === displayedMovies.length || showedShortMovies.length === displayedMovies.length;
-
   //Изменение ширины
   const handleResize = () => {
     if (window.innerWidth >= 1280) {
