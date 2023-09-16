@@ -6,3 +6,7 @@
 ## Ссылки на проект
 
 Макет в Figma: light-1.
+
+Ссылка на сайт: https://films.nomoreparties.co/
+
+Ссылка на pull request: https://github.com/al3xus22/movies-explorer-frontend/pull/2
