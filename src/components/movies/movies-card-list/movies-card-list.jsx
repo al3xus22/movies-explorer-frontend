@@ -22,7 +22,7 @@ function MoviesCardList({ movies, loadMore, isAllMoviesDisplayed, savedMovies, h
           ))
         )}
       </ul>
-      {location.pathname === "/movies" ? !isAllMoviesDisplayed && <MoreMovies loadMore={loadMore}/> : ""}
+      {location.pathname === "/movies" ? <MoreMovies loadMore={loadMore}/> : ""}
     </>
   )
 }
