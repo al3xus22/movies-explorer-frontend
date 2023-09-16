@@ -8,3 +8,5 @@
 IP-адрес 158.160.111.23
 
 Frontend https://films.nomoreparties.co
+
+Ссылка на pull request: https://github.com/al3xus22/movies-explorer-frontend/pull/2
