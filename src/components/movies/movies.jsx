@@ -27,7 +27,6 @@ function Movies({
     const saveState = localStorage.getItem("isShortFilm");
     return saveState ? JSON.parse(saveState) : [];
   });
-  const [showedMovies, setShowedMovies] = useState([])
   const [displayedMovies, setDisplayedMovies] = useState([]);                //Отображамые фильмы на странице
   const [cardsRow, setCardsRow] = useState(0);                               //Карточек в ряду
   const [showCards, setShowCards] = useState(0);                             //Фильмов на странице изначально
@@ -59,7 +58,7 @@ function Movies({
   }
 
   //Отображаемые на странице карточки и данные для кнопки Ещё--------------------------------------------------------
-  const isAllMoviesDisplayed = searchMovies.length === displayedMovies.length || movies.length === displayedMovies.length || showedMovies.length === displayedMovies.length;
+  const isAllMoviesDisplayed = searchMovies.length === displayedMovies.length || movies.length === displayedMovies.length;
 
   //Изменение ширины
   const handleResize = () => {
@@ -106,7 +105,6 @@ function Movies({
     if (isShortFilm) {
       // Фильтр короткометражек
       const filteredShortFilms = filterShortFilms(searchMovies);
-      setShowedMovies(filteredShortFilms);
       setDisplayedMovies(filteredShortFilms.slice(0, showCards));
     } else {
       if (query && searchMovies.length > 0) {
