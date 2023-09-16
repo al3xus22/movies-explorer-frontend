@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./saved-movies.css";
 import SearchForm from "../movies/search-form/search-form";
 import MoviesCardList from "../movies/movies-card-list/movies-card-list";
+import { filterMovies, filterShortFilms } from "../../utils/utilties";
 
 function SavedMovies({
                        query,
@@ -9,18 +10,18 @@ function SavedMovies({
                        savedMovies,
                        handleSaveMovie,
                        deleteMovie,
-                       handleSearch,
                        searched,
                        setSearched,
                        errorRes,
                        setErrorRes,
-                       filterShortFilms
                      }) {
 
   const [inputValue, setInputValue] = useState("");
   const [errors, setErrors] = useState("");
   const [displayMovies, setDisplayMovies] = useState(savedMovies);
   const [isShortFilm, setIsShortFilm] = useState(false);
+
+  const filterShort = filterShortFilms(displayMovies);    //фильтр короткометражек
 
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -46,7 +47,7 @@ function SavedMovies({
     setInputValue("");
     setDisplayMovies(savedMovies);
 
-    const filteredMovies = handleSearch(query, savedMovies);
+    const filteredMovies = filterMovies(query, savedMovies);
 
     if (!inputValue) {
       setDisplayMovies(savedMovies);
@@ -56,8 +57,6 @@ function SavedMovies({
       setDisplayMovies([]);
     }
   }, [query, savedMovies]);
-
-  const filterShort = filterShortFilms(displayMovies);    //фильтр короткометражек
 
   //Отображаемые фильмы и очистка значения поиска
   useEffect(() => {

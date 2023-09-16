@@ -3,6 +3,7 @@ import "./movies.css";
 import SearchForm from "./search-form/search-form";
 import MoviesCardList from "./movies-card-list/movies-card-list";
 import Preloader from "../preloader/peloader";
+import { filterMovies, filterShortFilms } from "../../utils/utilties";
 
 let resizeTimer;
 
@@ -11,24 +12,21 @@ function Movies({
                   query,
                   setQuery,
                   isLoading,
-                  handleSearch,
                   setSearched,
                   searched,
                   errorRes,
                   handleSaveMovie,
                   deleteMovie,
                   savedMovies,
-                  filterShortFilms
                 }) {
 
   const queryValue = JSON.parse(localStorage.getItem("query"));
   const setSearchMovieValue = JSON.parse(localStorage.getItem("searchMovies"));
 
   const [searchMovies, setSearchMovies] = useState(() => {                     //фильмы по поиску
-  const saveState = localStorage.getItem("isShortFilm");
-  return saveState ? JSON.parse(saveState) : [];
-});
-
+    const saveState = localStorage.getItem("isShortFilm");
+    return saveState ? JSON.parse(saveState) : [];
+  });
   const [displayedMovies, setDisplayedMovies] = useState([]);                //Отображамые фильмы на странице
   const [cardsRow, setCardsRow] = useState(0);                               //Карточек в ряду
   const [showCards, setShowCards] = useState(0);                             //Фильмов на странице изначально
@@ -60,7 +58,7 @@ function Movies({
   }
 
   //Отображаемые на странице карточки и данные для кнопки Ещё--------------------------------------------------------
-  const isAllMoviesDisplayed = searchMovies.length === displayedMovies.length || movies.length === displayedMovies.length
+  const isAllMoviesDisplayed = searchMovies.length === displayedMovies.length || movies.length === displayedMovies.length;
 
   //Изменение ширины
   const handleResize = () => {
@@ -104,10 +102,9 @@ function Movies({
     };
 
     handleResizeWithTimeout();
-    if (isShortFilm && !query) {
+    if (isShortFilm) {
       // Фильтр короткометражек
-      const filteredShortFilms = filterShortFilms(movies);
-      setSearchMovies(filteredShortFilms);
+      const filteredShortFilms = filterShortFilms(searchMovies);
       setDisplayedMovies(filteredShortFilms.slice(0, showCards));
     } else {
       if (query && searchMovies.length > 0) {
@@ -127,8 +124,8 @@ function Movies({
 
   // Поиск фильмов
   useEffect(() => {
-    const filteredMovies = handleSearch(query, movies)
     if (movies.length > 0) {
+      const filteredMovies = filterMovies(query, movies)
       if (!query) {
         setSearchMovies(movies);
       } else if (filteredMovies.length > 0) {
@@ -168,8 +165,10 @@ function Movies({
       {isLoading ? (<Preloader/>) : searched && displayedMovies.length === 0 ? (
         <p
           className="movies_not-found-text">{`${errorRes ? errorRes : "Ничего не найдено"}`}</p>) : (displayedMovies.length > 0 &&
-        <MoviesCardList movies={isShortFilm ? setDisplayedMovies((displayedMovies) => filterShortFilms(displayedMovies)) : displayedMovies} loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed}
-                        handleSaveMovie={handleSaveMovie} deleteMovie={deleteMovie} savedMovies={savedMovies}/>)}
+        <MoviesCardList
+          movies={displayedMovies}
+          loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed}
+          handleSaveMovie={handleSaveMovie} deleteMovie={deleteMovie} savedMovies={savedMovies}/>)}
     </section>
   )
 }

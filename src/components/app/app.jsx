@@ -19,7 +19,6 @@ import { MOVIE_URL } from "../../utils/constants";
 function App() {
   const login = localStorage.getItem("login");                                     //Извлекаем из хранилища для определения залогиненности
 
-
   //Стейты для пользователя
   const [currentUser, setCurrentUser] = useState({ email: "", name: "" });    //Хранение данных текущего пользователя
   const [loggedIn, setLoggedIn] = useState(login);                                      //Залогинен пользователь или нет
@@ -27,15 +26,12 @@ function App() {
   const [serverRes, setServerRes] = useState("");                             //Успешный ответ с сервера
   const [editFormActive, setEditFormActive] = useState(false);                //Активировать инпуты редактирования профиля(кнопка редактировать/сохранить)
   const [isUserInfoChanged, setIsUserInfoChanged] = useState(false);          //Если данные в инпутах отличаются (при обновлении пользователя)
-
   const [isLoading, setIsLoading] = useState(false);                          //Ожидание ответа с сервера (загрузка фильмов, прелоадер)
-
   //Стейты для фильмов
   const [movies, setMovies] = useState([]);                                   //все фильмы
   const [query, setQuery] = useState("");                                     //значение в поисковой строке
-
-  const [searched, setSearched] = useState(false);                           //Если ничего не найдено в поиске
-  const [savedMovies, setSavedMovies] = useState([]);                        //Сохраненные фильмы
+  const [searched, setSearched] = useState(false);                            //Если ничего не найдено в поиске
+  const [savedMovies, setSavedMovies] = useState([]);                         //Сохраненные фильмы
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -48,31 +44,24 @@ function App() {
         if (!res.ok) {
           throw new Error(`Ошибка: ${res.status}`);
         }
-
         return MainApi.authorize({ email, password });
       })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Ошибка: ${res.status}`);
         }
-
         return res.json();
       })
       .then(({ user }) => {
-        // Сохраняем идентификатор пользователя в локальном хранилище
         localStorage.setItem("userId", user._id);
-
-        // Устанавливаем флаг авторизации в true и обновляем текущего пользователя
         setLoggedIn(true);
         setCurrentUser(user);
-
-        // Перенаправляем пользователя на нужную страницу, например, на страницу фильмов
         navigate("/movies", { replace: true });
       })
       .catch((error) => {
-        if (error.message.includes("Ошибка: 409")) {
+        if (error === "Ошибка: 409") {
           setErrorRes("Пользователь с таким email уже существует");
-        } else if (error.message.includes("Ошибка: 400")) {
+        } else if (error === "Ошибка: 400") {
           setErrorRes("При регистрации пользователя произошла ошибка.");
         } else {
           setErrorRes("На сервере произошла ошибка.");
@@ -86,7 +75,6 @@ function App() {
     MainApi.authorize({ email, password })
       .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
       .then(({ user }) => {
-
         localStorage.setItem("login", true);
         setLoggedIn(true);
         navigate("/movies", { replace: true });
@@ -94,11 +82,11 @@ function App() {
       })
       .catch((err) => {
         let errorResMessage = "На сервере произошла ошибка.";
-        if (err.includes("Ошибка: 401")) {
+        if (err ==="Ошибка: 401") {
           errorResMessage = "Вы ввели неправильный логин или пароль.";
-        } else if (err.includes("Ошибка: 400")) {
+        } else if (err === "Ошибка: 400") {
           errorResMessage = "При авторизации произошла ошибка. Токен не передан или передан не в том формате.";
-        } else if (err.includes("Ошибка: 403")) {
+        } else if (err === "Ошибка: 403") {
           errorResMessage = "Переданный токен некорректен.";
         }
         setErrorRes(errorResMessage);
@@ -117,9 +105,9 @@ function App() {
         setServerRes("Данные успешно обновлены!");
       })
       .catch((error) => {
-        if (error.includes("Ошибка: 409")) {
+        if (error === "Ошибка: 409") {
           setErrorRes("Пользователь с таким email уже существует");
-        } else if (error.includes("Ошибка: 400")) {
+        } else if (error ==="Ошибка: 400") {
           setErrorRes("При обновлении профиля произошла ошибка");
         } else {
           setErrorRes("На сервере произошла ошибка.");
@@ -157,7 +145,7 @@ function App() {
           setLoggedIn(true);
         })
         .catch((err) => {
-          if (err.includes("Ошибка: 401")) {
+          if (err === "Ошибка: 401") {
             setLoggedIn(false);
             localStorage.clear();
             return;
@@ -183,7 +171,6 @@ function App() {
       thumbnail: `${MOVIE_URL}${movie.image.formats.thumbnail.url}`,
       movieId: movie.id,
     };
-
     MainApi.saveMovies(movieData)
       .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
       .then((saveMovies) => {
@@ -208,23 +195,11 @@ function App() {
         setSavedMovies((presSavedMovies) => presSavedMovies.filter((savedMovie) => savedMovie._id !== res._id))
       })
       .catch((error) => {
-        if (error.includes("Ошибка: 401")) {
+        if (error === "Ошибка: 401") {
           setErrorRes("Вы не можете удалить фильм. Вы не авторизованы");
         }
         console.log(error)
       })
-  }
-
-  //Поиск
-  const handleSearch = (query, movies) => {
-    return movies.filter((movie) =>
-      movie.nameRU.toLowerCase().includes(query.toLowerCase()) || movie.nameEN.toLowerCase().includes(query.toLowerCase())
-    );
-  }
-
-  //Фильтр короткометражек
-  const filterShortFilms = (movies) => {
-    return movies.filter((movie) => movie.duration <= 40);
   }
 
   //Получение всех фильмов
@@ -236,7 +211,7 @@ function App() {
           setMovies(movies);
         })
         .catch((err) => {
-          if (err.includes("Ошибка: 401")) {
+          if (err === "Ошибка: 401") {
             setLoggedIn(false);
             localStorage.clear();
             return;
@@ -248,7 +223,7 @@ function App() {
           setIsLoading(false);
         })
     }
-  }, [query]);
+  }, [query, movies]);
 
   useEffect(() => {
     //Сбрасываем ошибки при переходах по роутам
@@ -266,20 +241,16 @@ function App() {
             <Route path="/" element={<Main/>}/>
             <Route path="/movies" element={
               <ProtectedRoute loggedIn={loggedIn} element={Movies}
-                              movies={movies} query={query} setQuery={setQuery}
-                              isLoading={isLoading}
-                              handleSearch={handleSearch} setSearched={setSearched}
-                              searched={searched} errorRes={errorRes}
-                              handleSaveMovie={handleSaveMovie} deleteMovie={handleDeleteMovie}
-                              savedMovies={savedMovies}
-                              filterShortFilms={filterShortFilms}/>
+                              movies={movies} savedMovies={savedMovies}
+                              isLoading={isLoading} query={query} setQuery={setQuery}
+                              setSearched={setSearched} searched={searched} errorRes={errorRes}
+                              handleSaveMovie={handleSaveMovie} deleteMovie={handleDeleteMovie}/>
             }/>
             <Route path="/saved-movies" element={
               <ProtectedRoute loggedIn={loggedIn} element={SavedMovies} query={query} setQuery={setQuery}
                               savedMovies={savedMovies} handleSaveMovie={handleSaveMovie}
-                              deleteMovie={handleDeleteMovie}
-                              searched={searched} setSearched={setSearched} handleSearch={handleSearch}
-                              errorRes={errorRes} setErrorRes={setErrorRes} filterShortFilms={filterShortFilms}/>
+                              deleteMovie={handleDeleteMovie} searched={searched} setSearched={setSearched}
+                              errorRes={errorRes} setErrorRes={setErrorRes}/>
             }/>
             <Route path="/profile" element={
               <ProtectedRoute loggedIn={loggedIn} element={Profile}

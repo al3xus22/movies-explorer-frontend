@@ -6,7 +6,6 @@ import AuthInput from "../auth-input/auth-input";
 import { validateEmail, validatePassword } from "../../utils/validation";
 
 function Login({ onLogin, authError, setAuthError, setQuery, setMovies }) {
-
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });             //Ошибки валидации
   const [loginError, setLoginError] = useState("");                              //Вывод сообщения об ошибке
