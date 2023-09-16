@@ -1,4 +1,4 @@
-# movies-explorer-api
+# movies-explorer-frontend
 Репозиторий фронтенда для приложения проекта `Movie`б со следующими возможностями: авторизации и регистрации пользователей, операции с фильмами и пользователями.
 
 Адрес репозитория: https://github.com/al3xus22/movies-explorer-frontend.git
