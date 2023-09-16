@@ -102,7 +102,7 @@ function Movies({
     };
 
     handleResizeWithTimeout();
-    if (isShortFilm) {
+    if (isShortFilm && searchMovies.length > 0) {
       // Фильтр короткометражек
       const filteredShortFilms = filterShortFilms(searchMovies);
       setDisplayedMovies(filteredShortFilms.slice(0, showCards));
