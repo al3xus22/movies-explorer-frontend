@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./movies.css";
-import SearchForm from "./search-form/search-form";
-import MoviesCardList from "./movies-card-list/movies-card-list";
+import SearchForm from "../search-form/search-form";
+import MoviesCardList from "../movies-card-list/movies-card-list";
 import Preloader from "../preloader/peloader";
 import { filterMovies, filterShortFilms } from "../../utils/utilties";
 
@@ -12,8 +12,6 @@ function Movies({
                   query,
                   setQuery,
                   isLoading,
-                  setSearched,
-                  searched,
                   errorRes,
                   handleSaveMovie,
                   deleteMovie,
@@ -21,7 +19,7 @@ function Movies({
                 }) {
 
   const queryValue = JSON.parse(localStorage.getItem("query"));
-  const setSearchMovieValue = JSON.parse(localStorage.getItem("searchMovies"));
+  const setSearchMoviesValue = JSON.parse(localStorage.getItem("searchMovies"));
 
   const [searchMovies, setSearchMovies] = useState(() => {                     //фильмы по поиску
     const saveState = localStorage.getItem("isShortFilm");
@@ -36,13 +34,13 @@ function Movies({
     return saveState ? JSON.parse(saveState) : false;
   });
   const [errors, setErrors] = useState("");
+  const [errorNotFound, setErrorNotFound] = useState("");
 
   const handleInputChange = (e) => {
     const { value } = e.target;
     // setInputValue(value);
     setQuery(value);
     setErrors("");
-    setSearched(false);
   }
 
   const handleSubmit = (e) => {
@@ -54,7 +52,6 @@ function Movies({
       localStorage.removeItem("query");
     } else {
       setErrors("");
-      setSearched(true);
     }
   }
 
@@ -127,22 +124,22 @@ function Movies({
   useEffect(() => {
     if (movies.length > 0) {
       const filteredMovies = filterMovies(query, movies)
-      if (!query) {
-        setSearchMovies(movies);
-      } else if (filteredMovies.length > 0) {
+      if (filteredMovies.length > 0) {
         setSearchMovies(filteredMovies);
       } else if (query && filteredMovies.length === 0) {
         setSearchMovies([]);
+        setErrorNotFound("Ничего не найдено");
       }
     }
   }, [query, movies]);
 
   //Установка значения поиска при загрузке----------------------------------------------------------------
   useEffect(() => {
-    if (!setSearchMovieValue) {
+    if (!setSearchMoviesValue) {
       return;
     } else {
       setQuery(queryValue);
+      setSearchMovies(setSearchMoviesValue);
     }
   }, []);
 
@@ -157,21 +154,17 @@ function Movies({
     localStorage.setItem("query", JSON.stringify(query));
   }, [query, searchMovies]);
 
-
-  return (
-    <section className="movies">
-      <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
-                  errors={errors} inputValue={query}
-                  handleSubmit={handleSubmit} onInputChange={handleInputChange} errorRes={errorRes}/>
-      {isLoading ? (<Preloader/>) : searched && displayedMovies.length === 0 ? (
-        <p
-          className="movies_not-found-text">{`${errorRes ? errorRes : "Ничего не найдено"}`}</p>) : (displayedMovies.length > 0 &&
-        <MoviesCardList
-          movies={displayedMovies}
-          loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed}
-          handleSaveMovie={handleSaveMovie} deleteMovie={deleteMovie} savedMovies={savedMovies}/>)}
-    </section>
-  )
+  return (<section className="movies">
+    <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
+                errors={errors} inputValue={query}
+                handleSubmit={handleSubmit} onInputChange={handleInputChange} errorRes={errorRes}/>
+    {isLoading ? (<Preloader/>) : (displayedMovies.length === 0 && movies.length > 0) ? (<p
+      className="movies_not-found-text">{errorRes ? errorRes : errorNotFound}</p>) : (displayedMovies.length > 0 &&
+      <MoviesCardList
+        movies={displayedMovies}
+        loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed}
+        handleSaveMovie={handleSaveMovie} deleteMovie={deleteMovie} savedMovies={savedMovies}/>)}
+  </section>)
 }
 
 export default Movies;

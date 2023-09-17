@@ -6,8 +6,7 @@ const goBack = () => {
 }
 
 function PageNotFound() {
-  return (
-    <div className="page-not-found">
+  return (<div className="page-not-found">
       <div className="page-not-found__main-text">
         <h1 className="page-not-found__title">404</h1>
         <p className="page-not-found__description">Страница не найдена</p>
@@ -15,8 +14,7 @@ function PageNotFound() {
       <button onClick={goBack} className="page-not-found__button hover-effect button-effect">
         <p className="page-not-found__link-text">Назад</p>
       </button>
-    </div>
-  )
+    </div>)
 }
 
 export default PageNotFound;

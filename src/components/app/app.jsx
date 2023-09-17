@@ -27,10 +27,10 @@ function App() {
   const [editFormActive, setEditFormActive] = useState(false);                //Активировать инпуты редактирования профиля(кнопка редактировать/сохранить)
   const [isUserInfoChanged, setIsUserInfoChanged] = useState(false);          //Если данные в инпутах отличаются (при обновлении пользователя)
   const [isLoading, setIsLoading] = useState(false);                          //Ожидание ответа с сервера (загрузка фильмов, прелоадер)
+  const [disabled, setDisabled] = useState(false);
   //Стейты для фильмов
   const [movies, setMovies] = useState([]);                                   //все фильмы
   const [query, setQuery] = useState("");                                     //значение в поисковой строке
-  const [searched, setSearched] = useState(false);                            //Если ничего не найдено в поиске
   const [savedMovies, setSavedMovies] = useState([]);                         //Сохраненные фильмы
 
   const location = useLocation();
@@ -39,41 +39,37 @@ function App() {
   //Регистрация, аутентификация, редактирование профиля и выход пользователя-----------------------------------
   //Регистрация
   const registerUser = ({ name, email, password }) => {
+    setDisabled(true);
     MainApi.register({ name, email, password })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Ошибка: ${res.status}`);
-        }
+      .then(() => {
         return MainApi.authorize({ email, password });
       })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Ошибка: ${res.status}`);
-        }
-        return res.json();
-      })
       .then(({ user }) => {
-        localStorage.setItem("userId", user._id);
+        localStorage.setItem("login", true);
         setLoggedIn(true);
-        setCurrentUser(user);
         navigate("/movies", { replace: true });
+        setCurrentUser(user)
       })
       .catch((error) => {
         if (error === "Ошибка: 409") {
-          setErrorRes("Пользователь с таким email уже существует");
+          setErrorRes("Пользователь с таким email уже существует.");
         } else if (error === "Ошибка: 400") {
           setErrorRes("При регистрации пользователя произошла ошибка.");
         } else {
           setErrorRes("На сервере произошла ошибка.");
         }
-      });
+        console.log(error);
+      })
+      .finally(() => {
+        setDisabled(false);
+      })
   };
 
   //Аутентификация
   const handleLogin = (formData) => {
     const { email, password } = formData;
+    setDisabled(true);
     MainApi.authorize({ email, password })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
       .then(({ user }) => {
         localStorage.setItem("login", true);
         setLoggedIn(true);
@@ -82,7 +78,7 @@ function App() {
       })
       .catch((err) => {
         let errorResMessage = "На сервере произошла ошибка.";
-        if (err ==="Ошибка: 401") {
+        if (err === "Ошибка: 401") {
           errorResMessage = "Вы ввели неправильный логин или пароль.";
         } else if (err === "Ошибка: 400") {
           errorResMessage = "При авторизации произошла ошибка. Токен не передан или передан не в том формате.";
@@ -92,12 +88,15 @@ function App() {
         setErrorRes(errorResMessage);
         console.log(err);
       })
+      .finally(() => {
+        setDisabled(false);
+      })
   }
 
   //Изменеие (обновление) профиля пользователя
   function handleUpdateUser(newUserData) {
+    setDisabled(true);
     MainApi.setUserInfo(newUserData)
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
       .then((data) => {
         setCurrentUser(data);
         setEditFormActive(!editFormActive);
@@ -107,12 +106,22 @@ function App() {
       .catch((error) => {
         if (error === "Ошибка: 409") {
           setErrorRes("Пользователь с таким email уже существует");
-        } else if (error ==="Ошибка: 400") {
+        } else if (error === "Ошибка: 401") {
+          setLoggedIn(false);
+          localStorage.clear();
+          return;
+        } else {
+          setErrorRes("На сервере произошла ошибка.");
+        }if (error === "Ошибка: 400") {
           setErrorRes("При обновлении профиля произошла ошибка");
         } else {
           setErrorRes("На сервере произошла ошибка.");
         }
-      });
+        console.log(error);
+      })
+      .finally(() => {
+        setDisabled(false);
+      })
   }
 
   //Выход
@@ -123,22 +132,14 @@ function App() {
         setLoggedIn(false);
         setQuery("");
         setMovies([]);
-        setSearched(false);
         localStorage.clear();
       })
       .catch((err) => console.log(err));
   }
 
   useEffect(() => {
-    if (login) {
+    if (loggedIn) {
       Promise.all([MainApi.getUserInfo(), MainApi.getSavedMovies()])
-        .then(([userRes, savedMoviesRes]) => {
-          if (userRes.ok && savedMoviesRes.ok) {
-            return Promise.all([userRes.json(), savedMoviesRes.json()]);
-          } else {
-            return Promise.reject(`Ошибка: ${userRes.status}, ${savedMoviesRes.status}`);
-          }
-        })
         .then(([user, savedMovies]) => {
           setCurrentUser(user);
           setSavedMovies(savedMovies);
@@ -146,6 +147,7 @@ function App() {
         })
         .catch((err) => {
           if (err === "Ошибка: 401") {
+            setCurrentUser(null);
             setLoggedIn(false);
             localStorage.clear();
             return;
@@ -153,7 +155,7 @@ function App() {
           console.log(err)
         });
     }
-  }, [login]);
+  }, [loggedIn]);
 
 //Поиск, добавление, удаления фильмов-------------------------------------------------------------------------
   //Сохранение фильма (лайк)
@@ -172,11 +174,16 @@ function App() {
       movieId: movie.id,
     };
     MainApi.saveMovies(movieData)
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
       .then((saveMovies) => {
         setSavedMovies((prevSavedMovies) => [...prevSavedMovies, saveMovies]);
       })
       .catch((error) => {
+        if (error === "Ошибка: 401") {
+          setCurrentUser(null);
+          setLoggedIn(false);
+          localStorage.clear();
+          return;
+        }
         setErrorRes("Ошибка при сохранении фильма")
         console.log(error)
       })
@@ -185,18 +192,21 @@ function App() {
   //Удаление фильма из сохраненных
   function handleDeleteMovie(movie) {
     const movieId = savedMovies.find(savedMovie => savedMovie.movieId === movie.id);
-    if (currentUser._id !== movie.owner) {
+    if (currentUser._id !== (movie.owner || movieId.owner)) {
+      console.log(movie);
       setErrorRes("Вы не можете удалить чужую карточку");
       return;
     }
     MainApi.deleteMovies(movie._id || movieId._id)
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
       .then((res) => {
         setSavedMovies((presSavedMovies) => presSavedMovies.filter((savedMovie) => savedMovie._id !== res._id))
       })
       .catch((error) => {
         if (error === "Ошибка: 401") {
-          setErrorRes("Вы не можете удалить фильм. Вы не авторизованы");
+          setCurrentUser(null);
+          setLoggedIn(false);
+          localStorage.clear();
+          return;
         }
         console.log(error)
       })
@@ -212,6 +222,7 @@ function App() {
         })
         .catch((err) => {
           if (err === "Ошибка: 401") {
+            setCurrentUser(null);
             setLoggedIn(false);
             localStorage.clear();
             return;
@@ -232,46 +243,48 @@ function App() {
     setServerRes("");
   }, [location]);
 
-  return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="Root">
-        <div className="App">
-          {["/", "/movies", "/saved-movies", "/profile"].includes(location.pathname) && <Header loggedIn={loggedIn}/>}
-          <Routes>
-            <Route path="/" element={<Main/>}/>
-            <Route path="/movies" element={
-              <ProtectedRoute loggedIn={loggedIn} element={Movies}
-                              movies={movies} savedMovies={savedMovies}
-                              isLoading={isLoading} query={query} setQuery={setQuery}
-                              setSearched={setSearched} searched={searched} errorRes={errorRes}
-                              handleSaveMovie={handleSaveMovie} deleteMovie={handleDeleteMovie}/>
-            }/>
-            <Route path="/saved-movies" element={
-              <ProtectedRoute loggedIn={loggedIn} element={SavedMovies} query={query} setQuery={setQuery}
-                              savedMovies={savedMovies} handleSaveMovie={handleSaveMovie}
-                              deleteMovie={handleDeleteMovie} searched={searched} setSearched={setSearched}
-                              errorRes={errorRes} setErrorRes={setErrorRes}/>
-            }/>
-            <Route path="/profile" element={
-              <ProtectedRoute loggedIn={loggedIn} element={Profile}
-                              signOut={handleSignOut} handleUpdateUser={handleUpdateUser}
-                              updateError={errorRes} setUpdateError={setErrorRes}
-                              setEditFormActive={setEditFormActive} editFormActive={editFormActive}
-                              setIsUserInfoChanged={setIsUserInfoChanged} isUserInfoChanged={isUserInfoChanged}
-                              serverRes={serverRes} setServerRes={setServerRes}/>
-            }/>
-            <Route path="/signin"
-                   element={loggedIn ? <Navigate to="/"/> :
-                     <Login onLogin={handleLogin} authError={errorRes} setAuthError={setErrorRes} setQuery={setQuery} setMovies={setMovies}/>}/>
-            <Route path="/signup"
-                   element={loggedIn ? <Navigate to="/"/> : <Register register={registerUser} authError={errorRes} setQuery={setQuery} setMovies={setMovies}/>}/>
-            <Route path="*" element={<PageNotFound/>}/>
-          </Routes>
-          {["/", "/movies", "/saved-movies"].includes(location.pathname) && <Footer/>}
-        </div>
+  return (<CurrentUserContext.Provider value={currentUser}>
+    <div className="Root">
+      <div className="App">
+        {["/", "/movies", "/saved-movies", "/profile"].includes(location.pathname) && <Header loggedIn={loggedIn}/>}
+        <Routes>
+          <Route path="/" element={<Main/>}/>
+          <Route path="/movies" element={<ProtectedRoute loggedIn={loggedIn} element={Movies}
+                                                         movies={movies} savedMovies={savedMovies}
+                                                         isLoading={isLoading} query={query} setQuery={setQuery}
+                                                         errorRes={errorRes} setErrorRes={setErrorRes}
+                                                         handleSaveMovie={handleSaveMovie}
+                                                         deleteMovie={handleDeleteMovie}/>}/>
+          <Route path="/saved-movies"
+                 element={<ProtectedRoute loggedIn={loggedIn} element={SavedMovies} query={query} setQuery={setQuery}
+                                          savedMovies={savedMovies} handleSaveMovie={handleSaveMovie}
+                                          deleteMovie={handleDeleteMovie}
+                                          errorRes={errorRes} setErrorRes={setErrorRes}/>}/>
+          <Route path="/profile" element={<ProtectedRoute loggedIn={loggedIn} element={Profile}
+                                                          signOut={handleSignOut} handleUpdateUser={handleUpdateUser}
+                                                          updateError={errorRes} setUpdateError={setErrorRes}
+                                                          setEditFormActive={setEditFormActive}
+                                                          editFormActive={editFormActive}
+                                                          setIsUserInfoChanged={setIsUserInfoChanged}
+                                                          isUserInfoChanged={isUserInfoChanged}
+                                                          serverRes={serverRes} setServerRes={setServerRes}
+                                                          disabled={disabled}/>}/>
+          <Route path="/signin"
+                 element={loggedIn ? <Navigate to="/"/> :
+                   <Login onLogin={handleLogin} authError={errorRes} setAuthError={setErrorRes} setQuery={setQuery}
+                          setMovies={setMovies} disabled={disabled}/>}/>
+          <Route path="/signup"
+                 element={loggedIn ? <Navigate to="/"/> :
+                   <Register register={registerUser} authError={errorRes} setAuthError={setErrorRes}
+                             setQuery={setQuery}
+                             setMovies={setMovies}
+                             disabled={disabled}/>}/>
+          <Route path="*" element={<PageNotFound/>}/>
+        </Routes>
+        {["/", "/movies", "/saved-movies"].includes(location.pathname) && <Footer/>}
       </div>
-    </CurrentUserContext.Provider>
-  );
+    </div>
+  </CurrentUserContext.Provider>);
 }
 
 export default App;

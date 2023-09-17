@@ -1,8 +1,6 @@
 //Поиск
 export const filterMovies = (query, movies) => {
-  return movies.filter((movie) =>
-    movie.nameRU.toLowerCase().includes(query.toLowerCase()) || movie.nameEN.toLowerCase().includes(query.toLowerCase())
-  );
+  return movies.filter((movie) => movie.nameRU.toLowerCase().includes(query.toLowerCase()) || movie.nameEN.toLowerCase().includes(query.toLowerCase()));
 }
 
 //Фильтр короткометражек

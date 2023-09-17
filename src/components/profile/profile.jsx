@@ -14,7 +14,8 @@ function Profile({
                    isUserInfoChanged,
                    setIsUserInfoChanged,
                    serverRes,
-                   setServerRes
+                   setServerRes,
+                   disabled
                  }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -25,13 +26,11 @@ function Profile({
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
-      ...formData,
-      [name]: value,
+      ...formData, [name]: value,
     })
 
     const newErrors = {
-      ...errors,
-      [name]: name === "name" ? validateName(value) : validateEmail(value),
+      ...errors, [name]: name === "name" ? validateName(value) : validateEmail(value),
     };
 
     setErrors(newErrors);
@@ -44,8 +43,7 @@ function Profile({
     setUpdateError("");
 
     setIsUserInfoChanged((prevInfo) => ({
-      ...prevInfo,
-      [name]: name === "name" || name === "email" ? value !== currentUser[name] : prevInfo[name],
+      ...prevInfo, [name]: name === "name" || name === "email" ? value !== currentUser[name] : prevInfo[name],
     }));
   }
 
@@ -56,8 +54,7 @@ function Profile({
     e.preventDefault();
 
     const newErrors = {
-      email: validateEmail(formData.email),
-      name: validateName(formData.name)
+      email: validateEmail(formData.email), name: validateName(formData.name)
     };
     setErrors(newErrors);
 
@@ -79,33 +76,33 @@ function Profile({
     setServerRes("");
   }
 
-  return (
-    <section className="profile">
-      <div className="profile-content">
-        <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-        <form className="profile__form" noValidate id="profile" onSubmit={handleSubmit}>
-          <ProfileInput editFormActive={editFormActive} label="Имя" type="text" name="name" id="name"
-                        value={formData.name} placeholder="Имя" onChange={handleInputChange} error={errors.name}/>
-          <span className="profile__form-border"></span>
-          <ProfileInput editFormActive={editFormActive} label="E-mail" type="email" name="email" id="email"
-                        value={formData.email} placeholder="E-mail" onChange={handleInputChange} error={errors.email}/>
-          {(profileEditError || updateError || serverRes) &&
-            <span className={`profile__input-error profile__input-error-text ${serverRes ? (serverRes && "profile__input-error-text_res") : ""}`}>{profileEditError || updateError || serverRes}</span>}
-          {editFormActive && <button
-            className={`profile__button-submit profile__button-submit-text profile__buttons-position ${isUserDataChanged ? "" : "profile__button-submit_disabled"}`}
-            type="submit" onClick={handleSubmit} disabled={!isUserDataChanged}>Сохранить</button>}
-        </form>
-      </div>
-      {!editFormActive && <div className="profile__buttons-container profile__buttons-position">
-        <button className="profile__button profile__button-text profile__button-edit hover-effect button-effect"
-                type="button" onClick={toggleEditFormActive}>Редактировать
-        </button>
-        <button className="profile__button profile__button-text profile__button-sign-out hover-effect button-effect"
-                type="submit" onClick={signOut}>Выйти из аккаунта
-        </button>
-      </div>}
-    </section>
-  )
+  return (<section className="profile">
+    <div className="profile-content">
+      <h1 className="profile__title">Привет, {currentUser.name}!</h1>
+      <form className="profile__form" noValidate id="profile" onSubmit={handleSubmit}>
+        <ProfileInput editFormActive={editFormActive} label="Имя" type="text" name="name" id="name"
+                      value={formData.name} placeholder="Имя" onChange={handleInputChange} error={errors.name}
+                      disabled={disabled}/>
+        <span className="profile__form-border"></span>
+        <ProfileInput editFormActive={editFormActive} label="E-mail" type="email" name="email" id="email"
+                      value={formData.email} placeholder="E-mail" onChange={handleInputChange} error={errors.email}
+                      disabled={disabled}/>
+        {(profileEditError || updateError || serverRes) && <span
+          className={`profile__input-error profile__input-error-text ${serverRes ? (serverRes && "profile__input-error-text_res") : ""}`}>{profileEditError || updateError || serverRes}</span>}
+        {editFormActive && <button
+          className={`profile__button-submit profile__button-submit-text profile__buttons-position ${(!isUserDataChanged || disabled) && "profile__button-submit_disabled"}`}
+          type="submit" onClick={handleSubmit} disabled={!isUserDataChanged || disabled}>Сохранить</button>}
+      </form>
+    </div>
+    {!editFormActive && <div className="profile__buttons-container profile__buttons-position">
+      <button className="profile__button profile__button-text profile__button-edit hover-effect button-effect"
+              type="button" onClick={toggleEditFormActive}>Редактировать
+      </button>
+      <button className="profile__button profile__button-text profile__button-sign-out hover-effect button-effect"
+              type="submit" onClick={signOut}>Выйти из аккаунта
+      </button>
+    </div>}
+  </section>)
 }
 
 export default Profile;

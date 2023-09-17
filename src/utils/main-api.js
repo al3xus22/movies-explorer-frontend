@@ -1,5 +1,12 @@
-import {BASE_URL} from "./constants";
+import { BASE_URL } from "./constants";
 //export const BASE_URL = "http://localhost:3001";
+
+const _checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
 
 //Регистрация пользователя
 export const register = ({ name, email, password }) => {
@@ -12,6 +19,7 @@ export const register = ({ name, email, password }) => {
     },
     body: JSON.stringify({ name, email, password }),
   })
+    .then(_checkResponse);
 }
 
 //Авторизация пользователя
@@ -25,6 +33,7 @@ export const authorize = ({ email, password }) => {
     },
     body: JSON.stringify({ email, password }),
   })
+    .then(_checkResponse);
 }
 
 
@@ -50,10 +59,11 @@ export const getUserInfo = () => {
       "Content-Type": "application/json",
     }
   })
+    .then(_checkResponse);
 }
 
 //Сохранение (изменение) данных пользователя
-export const setUserInfo = ({name, email}) => {
+export const setUserInfo = ({ name, email }) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "PATCH",
     credentials: "include",
@@ -63,6 +73,7 @@ export const setUserInfo = ({name, email}) => {
     },
     body: JSON.stringify({ name: name, email: email }),
   })
+    .then(_checkResponse);
 }
 
 //Сохранение (лайк) фильмов
@@ -78,6 +89,7 @@ export const saveMovies = (movie) => {
       ...movie
     })
   })
+    .then(_checkResponse);
 }
 
 //Удаление сохраненных фильмов
@@ -90,6 +102,7 @@ export const deleteMovies = (id) => {
       "Content-Type": "application/json",
     },
   })
+    .then(_checkResponse);
 }
 
 export const getSavedMovies = () => {
@@ -101,5 +114,6 @@ export const getSavedMovies = () => {
       "Content-Type": "application/json",
     },
   })
+    .then(_checkResponse);
 }
 
