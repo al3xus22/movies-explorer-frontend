@@ -67,13 +67,13 @@ function SavedMovies({
     setDisplayMovies(savedMovies);
     setQuery("");
   }, []);
-
+console.log(displayMovies);
   return (
     <section className="saved-movies">
       <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
                   handleSubmit={handleSubmit} onInputChange={handleInputChange}
                   errors={errors} errorRes={errorRes}/>
-      {((query && displayMovies.length === 0) || (isShortFilm && displayMovies.length === 0)) ? (
+      {((query && displayMovies.length === 0) || (displayMovies.length === 0)) ? (
           <p className="movies_not-found-text">{`${errorRes ? errorRes : "Ничего не найдено"}`}</p>) :
         (displayMovies.length > 0 &&
           <MoviesCardList savedMovies={displayMovies} handleSaveMovie={handleSaveMovie}
