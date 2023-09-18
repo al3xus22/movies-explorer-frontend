@@ -151,7 +151,7 @@ function Movies({
     localStorage.setItem("searchMovies", JSON.stringify(searchMovies));
     localStorage.setItem("query", JSON.stringify(query));
   }, [query, searchMovies]);
-console.log(displayedMovies);
+
   return (<section className="movies">
     <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
                 errors={errors} inputValue={query}
