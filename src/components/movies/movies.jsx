@@ -23,7 +23,7 @@ function Movies({
   const setSearchMoviesValue = JSON.parse(localStorage.getItem("searchMovies"));
 
   const [searchMovies, setSearchMovies] = useState(() => {                     //фильмы по поиску
-    const saveState = localStorage.getItem("isShortFilm");
+    const saveState = localStorage.getItem("searchMovies");
     return saveState ? JSON.parse(saveState) : [];
   });
   const [showedShortMovies, setShowedShortMovies] = useState([])
@@ -35,11 +35,9 @@ function Movies({
     return saveState ? JSON.parse(saveState) : false;
   });
   const [errors, setErrors] = useState("");
-  const [errorNotFound, setErrorNotFound] = useState("");
 
   const handleInputChange = (e) => {
     const { value } = e.target;
-    // setInputValue(value);
     setQuery(value);
     setErrors("");
   }
@@ -100,15 +98,11 @@ function Movies({
     };
 
     handleResizeWithTimeout();
-    if (isShortFilm && searchMovies.length > 0) {
+    if (isShortFilm) {
       // Фильтр короткометражек
       const filteredShortFilms = filterShortFilms(searchMovies);
       setShowedShortMovies(filteredShortFilms);
       setDisplayedMovies(filteredShortFilms.slice(0, showCards));
-    }
-    if (isShortFilm && searchMovies.length === 0) {
-      setDisplayedMovies([]);
-      setErrorNotFound("Ничего не найдено");
     } else {
       if (query && searchMovies.length > 0) {
         setDisplayedMovies(searchMovies.slice(0, showCards));
@@ -133,7 +127,6 @@ function Movies({
         setSearchMovies(filteredMovies);
       } else if (query && filteredMovies.length === 0) {
         setSearchMovies([]);
-        setErrorNotFound("Ничего не найдено");
       }
     }
   }, [query, movies]);
@@ -158,13 +151,15 @@ function Movies({
     localStorage.setItem("searchMovies", JSON.stringify(searchMovies));
     localStorage.setItem("query", JSON.stringify(query));
   }, [query, searchMovies]);
-
+console.log(displayedMovies);
   return (<section className="movies">
     <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
                 errors={errors} inputValue={query}
                 handleSubmit={handleSubmit} onInputChange={handleInputChange} errorRes={errorRes}/>
-    {isLoading ? (<Preloader/>) : ((displayedMovies.length === 0 && movies.length > 0) || (isShortFilm && movies.length === 0)) ? (<p
-      className="movies_not-found-text">{errorRes ? errorRes : errorNotFound}</p>) : (displayedMovies.length > 0 &&
+    {isLoading ? (
+      <Preloader/>) : ((displayedMovies.length === 0 && movies.length > 0) || (isShortFilm && movies.length === 0)) ? (
+      <p
+        className="movies_not-found-text">{errorRes ? errorRes : "Ничего не найдено"}</p>) : (displayedMovies.length > 0 &&
       <MoviesCardList
         movies={displayedMovies}
         loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed} disabled={disabled}

@@ -19,8 +19,6 @@ function SavedMovies({
   const [displayMovies, setDisplayMovies] = useState(savedMovies);
   const [isShortFilm, setIsShortFilm] = useState(false);
 
-  //const filterShort = filterShortFilms(savedMovies);    //фильтр короткометражек
-
   const handleInputChange = (e) => {
     const { value } = e.target;
     setQuery(value);
@@ -72,7 +70,7 @@ function SavedMovies({
       <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
                   handleSubmit={handleSubmit} onInputChange={handleInputChange}
                   errors={errors} errorRes={errorRes}/>
-      {((query && displayMovies.length === 0) || (!savedMovies.length === 0) || (isShortFilm && displayMovies.length === 0)) ? (
+      {((query && displayMovies.length === 0) || (savedMovies.length !== 0) || (isShortFilm && displayMovies.length === 0)) ? (
           <p className="movies_not-found-text">{`${errorRes ? errorRes : "Ничего не найдено"}`}</p>) :
         (displayMovies.length > 0 &&
           <MoviesCardList savedMovies={displayMovies} handleSaveMovie={handleSaveMovie} disabled={disabled}
