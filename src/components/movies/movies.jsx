@@ -16,6 +16,7 @@ function Movies({
                   handleSaveMovie,
                   deleteMovie,
                   savedMovies,
+                  disabled
                 }) {
 
   const queryValue = JSON.parse(localStorage.getItem("query"));
@@ -104,6 +105,10 @@ function Movies({
       const filteredShortFilms = filterShortFilms(searchMovies);
       setShowedShortMovies(filteredShortFilms);
       setDisplayedMovies(filteredShortFilms.slice(0, showCards));
+    }
+    if (isShortFilm && searchMovies.length === 0) {
+      setDisplayedMovies([]);
+      setErrorNotFound("Ничего не найдено");
     } else {
       if (query && searchMovies.length > 0) {
         setDisplayedMovies(searchMovies.slice(0, showCards));
@@ -153,16 +158,16 @@ function Movies({
     localStorage.setItem("searchMovies", JSON.stringify(searchMovies));
     localStorage.setItem("query", JSON.stringify(query));
   }, [query, searchMovies]);
-
+console.log(displayedMovies);
   return (<section className="movies">
     <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
                 errors={errors} inputValue={query}
                 handleSubmit={handleSubmit} onInputChange={handleInputChange} errorRes={errorRes}/>
-    {isLoading ? (<Preloader/>) : (displayedMovies.length === 0 && movies.length > 0) ? (<p
+    {isLoading ? (<Preloader/>) : ((displayedMovies.length === 0 && movies.length > 0) || (isShortFilm && movies.length === 0)) ? (<p
       className="movies_not-found-text">{errorRes ? errorRes : errorNotFound}</p>) : (displayedMovies.length > 0 &&
       <MoviesCardList
         movies={displayedMovies}
-        loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed}
+        loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed} disabled={disabled}
         handleSaveMovie={handleSaveMovie} deleteMovie={deleteMovie} savedMovies={savedMovies}/>)}
   </section>)
 }

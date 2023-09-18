@@ -11,9 +11,10 @@ function SavedMovies({
                        deleteMovie,
                        errorRes,
                        setErrorRes,
+                       disabled
                      }) {
 
-  const [inputValue, setInputValue] = useState("");
+  //const [inputValue, setInputValue] = useState("");
   const [errors, setErrors] = useState("");
   const [displayMovies, setDisplayMovies] = useState(savedMovies);
   const [isShortFilm, setIsShortFilm] = useState(false);
@@ -22,7 +23,6 @@ function SavedMovies({
 
   const handleInputChange = (e) => {
     const { value } = e.target;
-    setInputValue(value)
     setQuery(value);
     setErrors("");
   }
@@ -54,7 +54,6 @@ function SavedMovies({
 
   //Поиск и обновление фильмов на странице
   useEffect(() => {
-    setInputValue("");
     setDisplayMovies(savedMovies);
 
     const filteredMovies = filterMoviesByQuery(query, savedMovies);
@@ -67,7 +66,7 @@ function SavedMovies({
     setDisplayMovies(savedMovies);
     setQuery("");
   }, []);
-console.log(displayMovies);
+
   return (
     <section className="saved-movies">
       <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
@@ -76,7 +75,7 @@ console.log(displayMovies);
       {((query && displayMovies.length === 0) || (!savedMovies.length === 0) || (isShortFilm && displayMovies.length === 0)) ? (
           <p className="movies_not-found-text">{`${errorRes ? errorRes : "Ничего не найдено"}`}</p>) :
         (displayMovies.length > 0 &&
-          <MoviesCardList savedMovies={displayMovies} handleSaveMovie={handleSaveMovie}
+          <MoviesCardList savedMovies={displayMovies} handleSaveMovie={handleSaveMovie} disabled={disabled}
                           deleteMovie={deleteMovie}/>)}
     </section>
   )

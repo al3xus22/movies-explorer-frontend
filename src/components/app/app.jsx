@@ -112,7 +112,8 @@ function App() {
           return;
         } else {
           setErrorRes("На сервере произошла ошибка.");
-        }if (error === "Ошибка: 400") {
+        }
+        if (error === "Ошибка: 400") {
           setErrorRes("При обновлении профиля произошла ошибка");
         } else {
           setErrorRes("На сервере произошла ошибка.");
@@ -128,11 +129,11 @@ function App() {
   const handleSignOut = () => {
     MainApi.signOut()
       .then(() => {
-        navigate('/', { replace: true });
         setLoggedIn(false);
         setQuery("");
         setMovies([]);
         localStorage.clear();
+        navigate('/', { replace: true });
       })
       .catch((err) => console.log(err));
   }
@@ -173,6 +174,7 @@ function App() {
       thumbnail: `${MOVIE_URL}${movie.image.formats.thumbnail.url}`,
       movieId: movie.id,
     };
+    setDisabled(true);
     MainApi.saveMovies(movieData)
       .then((saveMovies) => {
         setSavedMovies((prevSavedMovies) => [...prevSavedMovies, saveMovies]);
@@ -187,6 +189,9 @@ function App() {
         setErrorRes("Ошибка при сохранении фильма")
         console.log(error)
       })
+      .finally(() => {
+        setDisabled(false);
+      })
   }
 
   //Удаление фильма из сохраненных
@@ -197,6 +202,7 @@ function App() {
       setErrorRes("Вы не можете удалить чужую карточку");
       return;
     }
+    setDisabled(true);
     MainApi.deleteMovies(movie._id || movieId._id)
       .then((res) => {
         setSavedMovies((presSavedMovies) => presSavedMovies.filter((savedMovie) => savedMovie._id !== res._id))
@@ -209,6 +215,9 @@ function App() {
           return;
         }
         console.log(error)
+      })
+      .finally(() => {
+        setDisabled(false);
       })
   }
 
@@ -253,12 +262,12 @@ function App() {
                                                          movies={movies} savedMovies={savedMovies}
                                                          isLoading={isLoading} query={query} setQuery={setQuery}
                                                          errorRes={errorRes} setErrorRes={setErrorRes}
-                                                         handleSaveMovie={handleSaveMovie}
+                                                         handleSaveMovie={handleSaveMovie} disabled={disabled}
                                                          deleteMovie={handleDeleteMovie}/>}/>
           <Route path="/saved-movies"
                  element={<ProtectedRoute loggedIn={loggedIn} element={SavedMovies} query={query} setQuery={setQuery}
                                           savedMovies={savedMovies} handleSaveMovie={handleSaveMovie}
-                                          deleteMovie={handleDeleteMovie}
+                                          deleteMovie={handleDeleteMovie} disabled={disabled}
                                           errorRes={errorRes} setErrorRes={setErrorRes}/>}/>
           <Route path="/profile" element={<ProtectedRoute loggedIn={loggedIn} element={Profile}
                                                           signOut={handleSignOut} handleUpdateUser={handleUpdateUser}
