@@ -107,6 +107,10 @@
     height: 221px;
   }
 
+  .profile__input-error {
+    bottom: 335px;
+  }
+
   .profile__buttons-position {
     bottom: 269px;
   }
@@ -126,6 +130,11 @@
   }
 
   .profile__form {
+    width: 260px;
+  }
+
+  .profile__input-error {
+    bottom: 104px;
     width: 260px;
   }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./saved-movies.css";
 import SearchForm from "../search-form/search-form";
 import MoviesCardList from "../movies-card-list/movies-card-list";
+import { filterMovies, filterShortFilms } from "../../utils/utilties";
 
 function SavedMovies({
                        query,
@@ -10,66 +11,39 @@ function SavedMovies({
                        handleSaveMovie,
                        deleteMovie,
                        errorRes,
-                       setErrorRes,
                        disabled
                      }) {
 
-  //const [inputValue, setInputValue] = useState("");
   const [errors, setErrors] = useState("");
   const [displayMovies, setDisplayMovies] = useState(savedMovies);
   const [isShortFilm, setIsShortFilm] = useState(false);
 
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    setQuery(value);
-    setErrors("");
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!query) {
-      setErrors("Введите ключевое слово");
-    } else {
-      setErrors("");
-      setErrorRes("");
-    }
-  }
-
-  const filterMoviesByQuery = (query, movies) => {
-    return movies.filter(movie => {
-      const nameRU = movie.nameRU || "";
-      const nameEn = movie.nameEn || "";
-
-      const isMatch = (!query ||
-        nameRU.toLowerCase().includes(query.toLowerCase()) ||
-        nameEn.toLowerCase().includes(query.toLowerCase()));
-
-      const isShort = isShortFilm ? movie.duration <= 40 : true;
-
-      return isMatch && isShort;
-    });
-  };
-
   //Поиск и обновление фильмов на странице
   useEffect(() => {
-    setDisplayMovies(savedMovies);
+    const filteredMovies = () => {
+      let filterMoviesByQuery;
+      filterMoviesByQuery = filterMovies(query, savedMovies);
 
-    const filteredMovies = filterMoviesByQuery(query, savedMovies);
+      if (isShortFilm) {
+        filterMoviesByQuery = filterShortFilms(filterMoviesByQuery);
+      }
+      return filterMoviesByQuery;
+    }
 
     setDisplayMovies(filteredMovies);
   }, [query, savedMovies, isShortFilm]);
 
-  //Отображаемые фильмы и очистка значения поиска
+  //Очистка значения поиска
   useEffect(() => {
-    setDisplayMovies(savedMovies);
     setQuery("");
   }, []);
 
   return (
     <section className="saved-movies">
       <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
-                  handleSubmit={handleSubmit} onInputChange={handleInputChange}
-                  errors={errors} errorRes={errorRes}/>
+                  errors={errors} setErrors={setErrors}
+                  query={query} setQuery={setQuery}
+                  errorRes={errorRes}/>
       {((query && displayMovies.length === 0) || (isShortFilm && displayMovies.length === 0)) ? (
           <p className="movies_not-found-text">{`${errorRes ? errorRes : "Ничего не найдено"}`}</p>) :
         (displayMovies.length > 0 &&

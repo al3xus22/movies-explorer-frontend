@@ -4,6 +4,7 @@ import SearchForm from "../search-form/search-form";
 import MoviesCardList from "../movies-card-list/movies-card-list";
 import Preloader from "../preloader/peloader";
 import { filterMovies, filterShortFilms } from "../../utils/utilties";
+import { DESKTOP_WIDTH, DESKTOP_S_WIDTH, TABLET_WIDTH, MOBILE_WIDTH, MOBILE_S_WIDTH } from "../../utils/constants";
 
 let resizeTimer;
 
@@ -19,55 +20,38 @@ function Movies({
                   disabled
                 }) {
 
+  //Получаем из хранилища сохраненнные данные (строка поиска и найденные фильмы)
   const queryValue = JSON.parse(localStorage.getItem("query"));
   const setSearchMoviesValue = JSON.parse(localStorage.getItem("searchMovies"));
 
-  const [searchMovies, setSearchMovies] = useState(() => {                     //фильмы по поиску
-    const saveState = localStorage.getItem("searchMovies");
-    return saveState ? JSON.parse(saveState) : [];
-  });
+  const [searchMovies, setSearchMovies] = useState(setSearchMoviesValue ?    //фильмы по поиску
+    setSearchMoviesValue : []);
   const [showedShortMovies, setShowedShortMovies] = useState([])
   const [displayedMovies, setDisplayedMovies] = useState([]);                //Отображамые фильмы на странице
   const [cardsRow, setCardsRow] = useState(0);                               //Карточек в ряду
   const [showCards, setShowCards] = useState(0);                             //Фильмов на странице изначально
-  const [isShortFilm, setIsShortFilm] = useState(() => {                      //чекбокс короткометрражек
+  const [isShortFilm, setIsShortFilm] = useState(() => {                     //чекбокс короткометрражек
     const saveState = localStorage.getItem("isShortFilm");
     return saveState ? JSON.parse(saveState) : false;
   });
+  const [noResult, setNoResult] = useState("");
   const [errors, setErrors] = useState("");
 
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    setQuery(value);
-    setErrors("");
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!query) {
-      setErrors("Введите ключевое слово");
-      localStorage.removeItem("searchMovies");
-      localStorage.removeItem("query");
-    } else {
-      setErrors("");
-    }
-  }
-
   //Отображаемые на странице карточки и данные для кнопки Ещё--------------------------------------------------------
+  //Все фильмы показаны
   const isAllMoviesDisplayed = searchMovies.length === displayedMovies.length || showedShortMovies.length === displayedMovies.length;
   //Изменение ширины
   const handleResize = () => {
-    if (window.innerWidth >= 1280) {
+    if (window.innerWidth >= DESKTOP_WIDTH) {
       setShowCards(16);
       setCardsRow(4);
-    } else if (window.innerWidth >= 990) {
+    } else if (window.innerWidth >= DESKTOP_S_WIDTH) {
       setShowCards(12);
       setCardsRow(3);
-    } else if (window.innerWidth >= 768) {
+    } else if (window.innerWidth >= TABLET_WIDTH) {
       setShowCards(8);
       setCardsRow(2);
-    } else if (320 <= window.innerWidth <= 480) {
+    } else if (MOBILE_S_WIDTH <= window.innerWidth <= MOBILE_WIDTH) {
       setShowCards(5);
       setCardsRow(2);
     }
@@ -119,7 +103,7 @@ function Movies({
   }, [showCards, searchMovies, movies, query, isShortFilm]);
 
 
-  // Поиск фильмов
+  // Поиск фильмов-----------------------------------------------------------------------------------------
   useEffect(() => {
     if (movies.length > 0) {
       const filteredMovies = filterMovies(query, movies)
@@ -127,6 +111,7 @@ function Movies({
         setSearchMovies(filteredMovies);
       } else if (query && filteredMovies.length === 0) {
         setSearchMovies([]);
+        setNoResult("Ничего не найдено");
       }
     }
   }, [query, movies]);
@@ -154,12 +139,12 @@ function Movies({
 
   return (<section className="movies">
     <SearchForm isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm}
-                errors={errors} inputValue={query}
-                handleSubmit={handleSubmit} onInputChange={handleInputChange} errorRes={errorRes}/>
+                errors={errors} setErrors={setErrors}
+                query={query} setQuery={setQuery} errorRes={errorRes}/>
     {isLoading ? (
       <Preloader/>) : ((displayedMovies.length === 0 && movies.length > 0) || (isShortFilm && movies.length === 0)) ? (
       <p
-        className="movies_not-found-text">{errorRes ? errorRes : "Ничего не найдено"}</p>) : (displayedMovies.length > 0 &&
+        className="movies_not-found-text">{errorRes ? errorRes : noResult}</p>) : (displayedMovies.length > 0 &&
       <MoviesCardList
         movies={displayedMovies}
         loadMore={loadMore} isAllMoviesDisplayed={isAllMoviesDisplayed} disabled={disabled}

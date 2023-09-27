@@ -1,48 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css";
 import logo from "../../images/header__logo.svg";
 import { Link } from "react-router-dom";
 import AuthInput from "../auth-input/auth-input";
-import { validateEmail, validatePassword } from "../../utils/validation";
+import { useFormWithValidation } from "../../utils/validation";
 
-function Login({ onLogin, authError, setAuthError, setQuery, setMovies, disabled }) {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({ email: "", password: "" });             //Ошибки валидации
-  const [loginError, setLoginError] = useState("");                              //Вывод сообщения об ошибке
+function Login({ onLogin, authError, setQuery, setMovies, disabled }) {
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setAuthError("");
-    setLoginError("");
-    setFormData({
-      ...formData, [name]: value,
-    })
+  const [loginError, setLoginError] = useState("");                      //Вывод сообщения об ошибке
+  const requiredFields = ["email", "password"];                                    //Обязательные поля, для проверки их заполненности
 
-    const newErrors = {
-      ...errors, [name]: name === 'email' ? validateEmail(value) : validatePassword(value),
-    };
+  const { values, errors, isValid, handleChange, resetForm } = useFormWithValidation({ email: "", password: "" })
 
-    setErrors(newErrors);
-
-    const hasInputErrors = Object.values(newErrors).some((error) => error !== "");
-    if (hasInputErrors) {
-      setLoginError("");
-    }
-  }
-
+  const isFormValid = isValid && requiredFields.every((field) => values[field] !== undefined);
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newErrors = {
-      email: validateEmail(formData.email), password: validatePassword(formData.password)
-    };
-    setErrors(newErrors);
-
-    const isFormValid = Object.values(newErrors).every((error) => error === '') && Object.values(formData).every((value) => value !== '');
-
     if (isFormValid) {
       onLogin({
-        email: formData.email, password: formData.password
+        email: values.email, password: values.password
       });
       setLoginError("");
       setQuery("");
@@ -52,7 +28,9 @@ function Login({ onLogin, authError, setAuthError, setQuery, setMovies, disabled
     }
   };
 
-  const isFormValid = Object.values(errors).every((error) => error === "") && Object.values(formData).every((value) => value !== "");
+  useEffect(() => {
+    resetForm();
+  }, [resetForm]);
 
   return (<section className="login">
     <div className="login__content">
@@ -61,11 +39,11 @@ function Login({ onLogin, authError, setAuthError, setQuery, setMovies, disabled
       </Link>
       <h1 className="login__title">Рады видеть!</h1>
       <form className="login__form" onSubmit={handleSubmit} id="login" noValidate>
-        <AuthInput label="E-mail" type="email" value={formData.email} name="email" id="email" placeholder="E-mail"
-                   onChange={handleInputChange} error={errors.email} disabled={disabled}/>
-        <AuthInput label="Пароль" type="password" value={formData.password} name="password" id="password"
+        <AuthInput label="E-mail" type="email" value={values.email} name="email" id="email" placeholder="E-mail"
+                   onChange={handleChange} error={errors.email} disabled={disabled}/>
+        <AuthInput label="Пароль" type="password" value={values.password} name="password" id="password"
                    placeholder="Пароль"
-                   onChange={handleInputChange} error={errors.password} disabled={disabled}/>
+                   onChange={handleChange} error={errors.password} disabled={disabled}/>
         {(loginError || authError) &&
           <span className="login__input-error login__input-error-text">{loginError || authError}</span>}
         <button type="submit"
