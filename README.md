@@ -1,12 +1,29 @@
-# movies-explorer-frontend
-Репозиторий фронтенда для приложения проекта `Movies, со следующими возможностями: авторизации и регистрации пользователей, операции с фильмами и пользователями.
+# Movies :movie_camera:
+________________________________________________________________
+Встречайте проект `Movies`!!!:clapper:  
+Сервис по поиску:mag: фильмов со следующими возможностями:  
+* *регистрация и авторизация пользователя*; 
+* *редактирования профиля пользователя*;
+* *поиск фильмов по названию*;
+* *сохранение фильмов в свою подборку*.
+________________________________________________________________
+### Стек:
 
-Адрес репозитория: https://github.com/al3xus22/movies-explorer-frontend.git
+<img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />
+<img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" />
+<img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" />
+<img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" />  
 
-## Ссылки на проект
+  ________________________________________________________________
+### Макет взят из:  
+<img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" />  
+  
+________________________________________________________________  
 
-Макет в Figma: light-1.
+После регистрации Вы попадете на страницу поиска. Просто начните вводить Ваш запрос запрос и карточки фильмов отобразятся на странице. Нажав, на лайк Вы добавите фильм себе на страницу.:hearts:  
+### Планируются следующие доработки:  
+* *поиск по режиссеру*;
+* *добавить плеер*.  
+Следите за обновлениями!  
 
-Ссылка на сайт: https://films.nomoreparties.co/
-
-Ссылка на pull request: https://github.com/al3xus22/movies-explorer-frontend/pull/2
+Если Вам уже не терпится попробовать <a href="(https://films.nomoreparties.co/" target="_blank">жмите</a> скорее!
