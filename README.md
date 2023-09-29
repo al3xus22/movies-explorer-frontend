@@ -19,8 +19,9 @@ ________________________________________________________________
 <img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" />  
   
 ________________________________________________________________
-<img align="center" src="https://github.com/al3xus22/movies-explorer-frontend/blob/main/demo.gif" alt="demo"/> 
-
+<div id="demo" align="center">
+  <img src="https://github.com/al3xus22/movies-explorer-frontend/blob/main/demo.gif" alt="demo"/> 
+</div>
 После регистрации Вы попадете на страницу поиска. Просто начните вводить Ваш запрос запрос и карточки фильмов отобразятся на странице. Нажав, на лайк Вы добавите фильм себе на страницу.:hearts:  
 ### Планируются следующие доработки:  
 * *поиск по режиссеру*;
