@@ -18,7 +18,7 @@ function AboutMe() {
               «Галвент». После того, как прошёл курс по веб-разработке, начал заниматься фриланс-заказами и ушёл с
               постоянной работы.</p>
           </div>
-          <a href="https://github.com/al3xus22" className="about-me__link hover-effect link-effect">Github</a>
+          <a href="https://github.com/al3xus22" target="_blank" className="about-me__link hover-effect link-effect">Github</a>
         </div>
         <img src="https://static.tildacdn.com/tild3939-3563-4465-b063-356232646136/15-back-end-develope.jpg" alt="Фото разработчика" className="about-me__image"/>
       </div>

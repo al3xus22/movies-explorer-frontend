@@ -13,17 +13,19 @@
     top: 0;
     background-color: rgba(0, 0, 0, 0.3);
     visibility: hidden;
-    opacity: 0;
+
     transition: all 0.5s;
     z-index: 2;
   }
 
   .side-menu_opened {
     visibility: visible;
-    opacity: 1;
+    transform: translateX(-68%);
+
   }
 
   .side-menu__content {
+    transform: translateX(100%);
     padding: 159px 0 90px;
     box-sizing: border-box;
     width: 68%;
@@ -57,5 +59,9 @@
   .side-menu__content {
     width: 100%;
     left: 0;
+  }
+
+  .side-menu_opened {
+    transform: translateX(-100%);
   }
 }

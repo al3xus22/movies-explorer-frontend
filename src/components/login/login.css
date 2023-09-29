@@ -60,6 +60,11 @@
   font-weight: 500;
 }
 
+.login__button-submit_disabled.login-button-text {
+  color: #C2C2C2;
+  background: #F8F8F8;
+}
+
 .login__register {
   display: flex;
   gap: 6px;

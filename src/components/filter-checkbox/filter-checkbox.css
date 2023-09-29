@@ -13,11 +13,11 @@
 }
 
 .filter-checkbox input[type="checkbox"]:checked {
-  background-image: url("../../../images/checkbox.svg");
+  background-image: url("../../images/checkbox.svg");
 }
 
 .filter-checkbox input[type="checkbox"]:not(:checked) {
-  background-image: url("../../../images/checkbox_off.svg");
+  background-image: url("../../images/checkbox_off.svg");
 }
 
 .filter-checkbox__text {

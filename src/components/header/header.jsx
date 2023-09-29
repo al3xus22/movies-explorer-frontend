@@ -20,8 +20,7 @@ function Header(props) {
     setIsOpen(false);
   }
 
-  return (
-    <header className={`header ${location.pathname === "/" ? "header_main" : ""}`}>
+  return (<header className={`header ${location.pathname === "/" ? "header_main" : ""}`}>
       <Link className="header__link" to="/">
         <img src={headerLogo} alt="Логотип" className="header__logo link-effect hover-effect"/>
       </Link>
@@ -38,11 +37,10 @@ function Header(props) {
         <ProfileButton/>
       </Link>}
       {props.loggedIn && <button type="button"
-               className={`header__burger-button ${location.pathname === "/" ? "header__burger-button_invert" : ""} hover-effect button-effect`}
-               onClick={handleBurgerClick}></button>}
+                                 className={`header__burger-button ${location.pathname === "/" ? "header__burger-button_invert" : ""} hover-effect button-effect`}
+                                 onClick={handleBurgerClick}></button>}
       <SideMenu isOpen={isOpen} handleCloseSideMenu={handleCloseSideMenu}/>
-    </header>
-  );
+    </header>);
 }
 
 export default Header;
