@@ -6,7 +6,7 @@
 * *редактирования профиля пользователя*;
 * *поиск фильмов по названию*;
 * *сохранение фильмов в свою подборку*.
----
+***
 ### Стек:
 
 <img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />&nbsp;
