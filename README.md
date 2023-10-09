@@ -1,4 +1,6 @@
-<imh src="https://static.tildacdn.com/tild6665-3133-4432-b334-393565643865/banner-949931_1920.jpg" alt="Movies-pic" />
+
+<img src="https://static.tildacdn.com/tild6665-3133-4432-b334-393565643865/banner-949931_1920.jpg" alt="Movies-pic" />
+
 # Movies :movie_camera:
 
 Встречайте проект `Movies`!!!:clapper:  
@@ -24,6 +26,7 @@ ________________________________________________________________
   <img src="https://github.com/al3xus22/movies-explorer-frontend/blob/main/demo.gif" alt="demo"/> 
 </div>
 После регистрации Вы попадете на страницу поиска. Просто начните вводить Ваш запрос запрос и карточки фильмов отобразятся на странице. Нажав, на лайк Вы добавите фильм себе на страницу.:hearts:  
+
 ### Планируются следующие доработки:  
 * *поиск по режиссеру*;
 * *добавить плеер*.  
